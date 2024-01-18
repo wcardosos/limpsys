@@ -3,6 +3,7 @@ import { CreateCustomerUseCase } from '@/domain/customers/use-cases/create-custo
 import { ListAllCustomersUseCase } from '@/domain/customers/use-cases/list-all-customers'
 import { Request, Response } from 'express'
 import { inject, injectable } from 'tsyringe'
+import { createCustomerBodySchema } from './body-schemas/customer'
 
 @injectable()
 export class CustomerController {
@@ -22,7 +23,7 @@ export class CustomerController {
   }
 
   async create(request: Request, response: Response) {
-    const { name, email, phone } = request.body
+    const { name, email, phone } = createCustomerBodySchema.parse(request.body)
 
     await this.createCustomerUseCase.execute({ name, email, phone })
 
