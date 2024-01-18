@@ -1,15 +1,14 @@
 import { Customer } from '@/domain/customers/entities/customer'
-import { CustomersRepository } from '@/domain/customers/repositories/customers'
 import { ListAllCustomersUseCase } from '@/domain/customers/use-cases/list-all-customers'
 import { makeCustomer } from 'tests/utils/factories/entities/make-customer'
+import { makeCustomersRepository } from 'tests/utils/factories/repositories/make-customers'
 
 describe('Use case: ListAllCustomers', () => {
   let sut: ListAllCustomersUseCase
 
   const allCustomersMock = [makeCustomer(), makeCustomer(), makeCustomer()]
-  const customersRepositoryMock = {
-    findAll: vi.fn().mockResolvedValue(allCustomersMock),
-  } as CustomersRepository
+  const customersRepositoryMock = makeCustomersRepository()
+  customersRepositoryMock.findAll.mockResolvedValue(allCustomersMock)
 
   beforeEach(() => {
     sut = new ListAllCustomersUseCase(customersRepositoryMock)
