@@ -4,9 +4,11 @@ import { Customer } from '@/domain/customers/entities/customer'
 import { queries } from '../queries/customers'
 import { CustomerDatabaseSchema } from '../schemas/customer'
 import { CustomerMapper } from '@/domain/customers/mappers/customer'
+import { inject, injectable } from 'tsyringe'
 
+@injectable()
 export class PostgresCustomersRepository implements CustomersRepository {
-  constructor(private connection: Connection) {
+  constructor(@inject('Connection') private connection: Connection) {
     this.connection.connect()
   }
 

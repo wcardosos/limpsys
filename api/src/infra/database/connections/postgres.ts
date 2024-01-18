@@ -1,6 +1,8 @@
 import { Client } from 'pg'
 import { Connection } from './connection'
+import { injectable } from 'tsyringe'
 
+@injectable()
 export class PostgresConnection implements Connection {
   private client: Client
 
