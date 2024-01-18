@@ -37,15 +37,26 @@ describe('Connection: Postgres', () => {
   })
 
   describe('executeQuery', () => {
+    const queryMock = 'query mock'
+
     it('should execute the query provided', async () => {
       // eslint-disable-next-line prettier/prettier
       (Client.prototype.query as Mock).mockResolvedValueOnce('query result')
-      const queryMock = 'query mock'
-
       const result = await sut.executeQuery(queryMock)
 
-      expect(Client.prototype.query).toHaveBeenCalledWith(queryMock)
+      expect(Client.prototype.query).toHaveBeenCalledWith(queryMock, undefined)
       expect(result).toBe('query result')
+    })
+
+    it('should execute the query provided with the passed values', async () => {
+      // eslint-disable-next-line prettier/prettier
+      (Client.prototype.query as Mock).mockResolvedValueOnce('query result with values')
+      const valuesMock = ['value 1', 'value 2']
+
+      const result = await sut.executeQuery(queryMock, valuesMock)
+
+      expect(Client.prototype.query).toHaveBeenCalledWith(queryMock, valuesMock)
+      expect(result).toBe('query result with values')
     })
   })
 })

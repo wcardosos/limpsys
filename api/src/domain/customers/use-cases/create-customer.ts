@@ -1,6 +1,7 @@
 import { Customer } from '../entities/customer'
 import { CustomersRepository } from '../repositories/customers'
 import { CustomerAlreadyExists } from '../errors/customer-already-exists'
+import { injectable, inject } from 'tsyringe'
 
 interface CreateCustomerUseCaseRequest {
   name: string
@@ -12,8 +13,12 @@ interface CreateCustomerUseCaseResponse {
   customer: Customer
 }
 
+@injectable()
 export class CreateCustomerUseCase {
-  constructor(private customersRepository: CustomersRepository) {}
+  constructor(
+    @inject('CustomersRepository')
+    private customersRepository: CustomersRepository,
+  ) {}
 
   async execute({
     name,

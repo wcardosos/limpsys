@@ -21,3 +21,7 @@ routes.get('/', (request, response) => {
 routes.get('/customers', (request, response) =>
   customerController.index(request, response),
 )
+
+routes.post('/customers', (request, response) => {
+  customerController.create(request, response)
+})

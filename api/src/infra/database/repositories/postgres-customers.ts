@@ -6,6 +6,8 @@ import { CustomerDatabaseSchema } from '../schemas/customer'
 import { CustomerMapper } from '@/domain/customers/mappers/customer'
 import { inject, injectable } from 'tsyringe'
 
+type CustomerInsertValues = [string, string, string, string]
+
 @injectable()
 export class PostgresCustomersRepository implements CustomersRepository {
   constructor(@inject('Connection') private connection: Connection) {
@@ -13,19 +15,35 @@ export class PostgresCustomersRepository implements CustomersRepository {
   }
 
   async findAll(): Promise<Customer[]> {
-    const customersData = await this.connection.executeQuery(queries.findAll())
+    const customerQueryResult = await this.connection.executeQuery(
+      queries.findAll,
+    )
 
-    return customersData.rows.map((result: CustomerDatabaseSchema) =>
+    return customerQueryResult.rows.map((result: CustomerDatabaseSchema) =>
       CustomerMapper.toDomain(result),
     )
   }
 
-  findByEmail(email: string): Promise<Customer | null> {
-    return new Promise(() => null)
+  async findByEmail(email: string): Promise<Customer | null> {
+    const customerQueryResult = await this.connection.executeQuery(
+      queries.findByEmail,
+      [email],
+    )
+
+    if (customerQueryResult.rows.length === 0) return null
+
+    return CustomerMapper.toDomain(customerQueryResult.rows[0])
   }
 
-  create(customer: Customer): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    return new Promise(() => {})
+  async create(customer: Customer): Promise<void> {
+    const customerInsertValues = this.composeCustomerInsertValues(customer)
+
+    await this.connection.executeQuery(queries.create, customerInsertValues)
+  }
+
+  private composeCustomerInsertValues(
+    customer: Customer,
+  ): CustomerInsertValues {
+    return [customer.id.value, customer.name, customer.email, customer.phone]
   }
 }

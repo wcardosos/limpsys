@@ -1,4 +1,5 @@
 import { CustomersRepository } from '@/domain/customers/repositories/customers'
+import { CreateCustomerUseCase } from '@/domain/customers/use-cases/create-customer'
 import { ListAllCustomersUseCase } from '@/domain/customers/use-cases/list-all-customers'
 import { Connection } from '@/infra/database/connections/connection'
 import { PostgresConnection } from '@/infra/database/connections/postgres'
@@ -17,6 +18,7 @@ container.registerSingleton<CustomersRepository>(
 
 // Use cases
 container.registerSingleton(ListAllCustomersUseCase)
+container.registerSingleton(CreateCustomerUseCase)
 
 // Controllers
 container.registerSingleton(CustomerController)

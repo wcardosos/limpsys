@@ -40,9 +40,41 @@ describe('Repository: PostgresCustomers', () => {
 
       const result = await sut.findAll()
 
+      expect(connectionMock.executeQuery).toHaveBeenCalledOnce()
       expect(result).toBeInstanceOf(Array<Customer>)
       expect(result[0]).toEqual(customersMock[0])
       expect(result[1]).toEqual(customersMock[1])
+    })
+  })
+
+  describe('findByEmail', () => {
+    it('should return a customer when found', async () => {
+      connectionMock.executeQuery.mockResolvedValueOnce({
+        rows: [
+          {
+            id: customersMock[0].id.value,
+            name: customersMock[0].name,
+            email: customersMock[0].email,
+            phone: customersMock[0].phone,
+          },
+        ],
+      })
+
+      const result = await sut.findByEmail(customersMock[0].email)
+
+      expect(connectionMock.executeQuery).toHaveBeenCalledOnce()
+      expect(result).toBeInstanceOf(Customer)
+    })
+
+    it('should return null when customer not found', async () => {
+      connectionMock.executeQuery.mockResolvedValueOnce({
+        rows: [],
+      })
+
+      const result = await sut.findByEmail(customersMock[0].email)
+
+      expect(connectionMock.executeQuery).toHaveBeenCalledOnce()
+      expect(result).toBeNull()
     })
   })
 })

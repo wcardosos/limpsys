@@ -24,7 +24,8 @@ export class PostgresConnection implements Connection {
     this.client.end()
   }
 
-  executeQuery(query: string) {
-    return this.client.query(query)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  executeQuery(query: string, values?: any[]) {
+    return this.client.query(query, values)
   }
 }
