@@ -20,8 +20,6 @@ routes.get('/customers', async (request, response) => {
   const { customers } = await listAllCustomersUseCase.execute()
 
   return response
-    .json({
-      customers: customers.map((customer) => CustomerMapper.toObject(customer)),
-    })
+    .json(customers.map((customer) => CustomerMapper.toObject(customer)))
     .send()
 })
