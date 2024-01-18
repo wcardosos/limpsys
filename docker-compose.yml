@@ -11,6 +11,10 @@ services:
     tty: true
     ports:
       - 3333:3333
+    environment:
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
     volumes:
       - ./api:/app
     depends_on:
@@ -25,7 +29,7 @@ services:
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_DB_NAME}
+      POSTGRES_DB: ${DATABASE_NAME}
       PGDATA: /data/postgres
     volumes:
       - postgres_data:/data/postgres
