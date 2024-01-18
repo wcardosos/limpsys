@@ -7,7 +7,7 @@ export const queries = {
       phone,
       created_at,
       updated_at
-    FROM customers WHERE deleted_at IS NULL;
+    FROM customers WHERE deleted_at IS NULL
   `,
   findByEmail: `
     SELECT

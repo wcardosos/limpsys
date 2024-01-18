@@ -3,9 +3,10 @@ import { CreateCustomerUseCase } from '@/domain/customers/use-cases/create-custo
 import { ListAllCustomersUseCase } from '@/domain/customers/use-cases/list-all-customers'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'tsyringe'
-import { createCustomerBodySchema } from './body-schemas/customer'
+import { createCustomerBodySchema } from './schemas/customer/body'
 import { ValidationError } from '@/core/errors/validation'
 import { ZodErrorHandler } from './utils/zod-error-handler'
+import { listAllCustomersQuerySchema } from './schemas/customer/query'
 
 @injectable()
 export class CustomerController {
@@ -18,7 +19,12 @@ export class CustomerController {
 
   async index(request: Request, response: Response, next: NextFunction) {
     try {
-      const { customers } = await this.listAllCustomersUseCase.execute()
+      const { name, email, phone } = listAllCustomersQuerySchema.parse(
+        request.query,
+      )
+      const { customers } = await this.listAllCustomersUseCase.execute({
+        filters: { name, email, phone },
+      })
 
       return response.json(
         customers.map((customer) => CustomerMapper.toObject(customer)),

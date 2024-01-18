@@ -2,6 +2,14 @@ import { inject, injectable } from 'tsyringe'
 import { Customer } from '../entities/customer'
 import { CustomersRepository } from '../repositories/customers'
 
+interface ListAllCustomersUseCaseRequest {
+  filters?: {
+    name?: string
+    email?: string
+    phone?: string
+  }
+}
+
 interface ListAllCustomerUseCaseResponse {
   customers: Customer[]
 }
@@ -13,8 +21,10 @@ export class ListAllCustomersUseCase {
     private customersRepository: CustomersRepository,
   ) {}
 
-  async execute(): Promise<ListAllCustomerUseCaseResponse> {
-    const customers = await this.customersRepository.findAll()
+  async execute({
+    filters,
+  }: ListAllCustomersUseCaseRequest): Promise<ListAllCustomerUseCaseResponse> {
+    const customers = await this.customersRepository.findAll(filters)
 
     return { customers }
   }

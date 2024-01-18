@@ -1,5 +1,6 @@
 import { Customer } from '@/domain/customers/entities/customer'
 import { Connection } from '@/infra/database/connections/connection'
+import { queries } from '@/infra/database/queries/customers'
 import { PostgresCustomersRepository } from '@/infra/database/repositories/postgres-customers'
 import { makeCustomer } from 'tests/utils/factories/entities/make-customer'
 
@@ -44,6 +45,38 @@ describe('Repository: PostgresCustomers', () => {
       expect(result).toBeInstanceOf(Array<Customer>)
       expect(result[0]).toEqual(customersMock[0])
       expect(result[1]).toEqual(customersMock[1])
+    })
+
+    describe('filters', () => {
+      it('should add name filter to query', async () => {
+        connectionMock.executeQuery.mockResolvedValueOnce({
+          rows: [],
+        })
+        const expectedQuery = queries.findAll + " AND name LIKE 'test%'"
+        await sut.findAll({ name: 'test' })
+
+        expect(connectionMock.executeQuery).toHaveBeenCalledWith(expectedQuery)
+      })
+
+      it('should add email filter to query', async () => {
+        connectionMock.executeQuery.mockResolvedValueOnce({
+          rows: [],
+        })
+        const expectedQuery = queries.findAll + " AND email LIKE 'test%'"
+        await sut.findAll({ email: 'test' })
+
+        expect(connectionMock.executeQuery).toHaveBeenCalledWith(expectedQuery)
+      })
+
+      it('should add phone filter to query', async () => {
+        connectionMock.executeQuery.mockResolvedValueOnce({
+          rows: [],
+        })
+        const expectedQuery = queries.findAll + " AND phone LIKE 'test%'"
+        await sut.findAll({ phone: 'test' })
+
+        expect(connectionMock.executeQuery).toHaveBeenCalledWith(expectedQuery)
+      })
     })
   })
 

@@ -14,9 +14,22 @@ export class PostgresCustomersRepository implements CustomersRepository {
     this.connection.connect()
   }
 
-  async findAll(): Promise<Customer[]> {
+  async findAll(filters?: {
+    name?: string
+    email?: string
+    phone?: string
+  }): Promise<Customer[]> {
+    const findQueryStatements = [queries.findAll]
+
+    if (filters?.name)
+      findQueryStatements.push(`AND name LIKE '${filters.name}%'`)
+    if (filters?.email)
+      findQueryStatements.push(`AND email LIKE '${filters.email}%'`)
+    if (filters?.phone)
+      findQueryStatements.push(`AND phone LIKE '${filters.phone}%'`)
+
     const customerQueryResult = await this.connection.executeQuery(
-      queries.findAll,
+      findQueryStatements.join(' '),
     )
 
     return customerQueryResult.rows.map((result: CustomerDatabaseSchema) =>

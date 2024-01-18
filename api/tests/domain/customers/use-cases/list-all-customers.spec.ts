@@ -16,7 +16,7 @@ describe('Use case: ListAllCustomers', () => {
 
   describe('execute', () => {
     it('should find all customers', async () => {
-      const result = await sut.execute()
+      const result = await sut.execute({})
 
       expect(customersRepositoryMock.findAll).toHaveBeenCalledOnce()
       expect(result.customers).toBeInstanceOf(Array<Customer>)
