@@ -3,6 +3,7 @@ import { ListAllCustomersUseCase } from '@/domain/customers/use-cases/list-all-c
 import { Connection } from '@/infra/database/connections/connection'
 import { PostgresConnection } from '@/infra/database/connections/postgres'
 import { PostgresCustomersRepository } from '@/infra/database/repositories/postgres-customers'
+import { CustomerController } from '@/infra/http/controllers/customer'
 import { container } from 'tsyringe'
 
 // Connections
@@ -16,3 +17,6 @@ container.registerSingleton<CustomersRepository>(
 
 // Use cases
 container.registerSingleton(ListAllCustomersUseCase)
+
+// Controllers
+container.registerSingleton(CustomerController)

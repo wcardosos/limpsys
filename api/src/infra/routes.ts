@@ -1,22 +1,23 @@
 import express from 'express'
-import { PostgresConnection } from './database/connections/postgres'
-import { PostgresCustomersRepository } from './database/repositories/postgres-customers'
-import { ListAllCustomersUseCase } from '@/domain/customers/use-cases/list-all-customers'
-import { CustomerMapper } from '@/domain/customers/mappers/customer'
 import { container } from 'tsyringe'
+import { CustomerController } from './http/controllers/customer'
 
 export const routes = express.Router()
 
-const listAllCustomersUseCase = container.resolve(ListAllCustomersUseCase)
+const customerController = container.resolve(CustomerController)
 
 routes.get('/', (request, response) => {
   return response.send('Welcome to limpsys API!')
 })
 
-routes.get('/customers', async (request, response) => {
-  const { customers } = await listAllCustomersUseCase.execute()
+/*
+  É necessário criar a função de callback que recebe os parâmetros de requisição e resposta e passar para o controller por conta
+  do tsyringe (lib utilizada para gerenciar a injeção de dependências da aplicação) não funcionar muito bem com o Express.
+  
+  Outra forma de resolver isso seria utilizando o bind, contudo achei que ficaria um pouco confuso dessa forma.
 
-  return response
-    .json(customers.map((customer) => CustomerMapper.toObject(customer)))
-    .send()
-})
+  Ex.: routes.get('/customers', customerController.index.bind(customerController))
+*/
+routes.get('/customers', (request, response) =>
+  customerController.index(request, response),
+)
