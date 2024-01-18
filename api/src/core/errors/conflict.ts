@@ -1,12 +1,7 @@
-export class ConflictError extends Error {
-  private _code: number
+import { ApiError } from './api-error'
 
+export class ConflictError extends ApiError {
   constructor(message: string) {
-    super(message)
-    this._code = 409
-  }
-
-  get code() {
-    return this._code
+    super(message, 409)
   }
 }

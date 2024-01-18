@@ -18,10 +18,10 @@ routes.get('/', (request, response) => {
 
   Ex.: routes.get('/customers', customerController.index.bind(customerController))
 */
-routes.get('/customers', (request, response) =>
-  customerController.index(request, response),
+routes.get('/customers', (request, response, next) =>
+  customerController.index(request, response, next),
 )
 
-routes.post('/customers', (request, response) => {
-  customerController.create(request, response)
+routes.post('/customers', (request, response, next) => {
+  customerController.create(request, response, next)
 })
