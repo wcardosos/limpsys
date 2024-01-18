@@ -13,7 +13,7 @@ export class PostgresCustomersRepository implements CustomersRepository {
   }
 
   async findAll(): Promise<Customer[]> {
-    const customersData = await this.connection.executeQuery(queries.findAll)
+    const customersData = await this.connection.executeQuery(queries.findAll())
 
     return customersData.rows.map((result: CustomerDatabaseSchema) =>
       CustomerMapper.toDomain(result),
