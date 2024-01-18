@@ -4,6 +4,8 @@ import { ListAllCustomersUseCase } from '@/domain/customers/use-cases/list-all-c
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'tsyringe'
 import { createCustomerBodySchema } from './body-schemas/customer'
+import { ValidationError } from '@/core/errors/validation'
+import { ZodErrorHandler } from './utils/zod-error-handler'
 
 @injectable()
 export class CustomerController {
@@ -28,9 +30,14 @@ export class CustomerController {
 
   async create(request: Request, response: Response, next: NextFunction) {
     try {
-      const { name, email, phone } = createCustomerBodySchema.parse(
-        request.body,
-      )
+      const result = createCustomerBodySchema.safeParse(request.body)
+
+      if (!result.success)
+        throw new ValidationError(
+          ZodErrorHandler.getMessage(result.error.message),
+        )
+
+      const { name, email, phone } = result.data
 
       await this.createCustomerUseCase.execute({ name, email, phone })
 
