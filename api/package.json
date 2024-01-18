@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "tsx watch src/infra/app.ts",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -12,6 +13,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.3.1",
     "@rocketseat/eslint-config": "^2.1.0",
+    "@types/express": "^4.17.21",
     "@types/node": "^20.11.5",
     "eslint": "^8.56.0",
     "tsconfig-paths": "^4.2.0",
@@ -19,5 +21,8 @@
     "typescript": "^5.3.3",
     "vite-tsconfig-paths": "^4.3.1",
     "vitest": "^1.2.1"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   }
 }
