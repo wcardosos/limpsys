@@ -1,4 +1,4 @@
-import { Header } from '@/components/common/header'
+import { Header } from '@/common/components/header'
 import { Outlet } from 'react-router-dom'
 
 export function DefaultLayout() {

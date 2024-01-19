@@ -1,4 +1,9 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from '@/common/components/ui/card'
 
 export function WelcomeCard() {
   return (
