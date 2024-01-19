@@ -4,10 +4,10 @@ import { WelcomeCard } from '@/features/customers/components/cards/welcome-card'
 
 export function Home() {
   return (
-    <main className="max-w-5xl mx-auto py-6 flex flex-wrap justify-between gap-y-10">
+    <div className="flex flex-wrap justify-between gap-y-10">
       <WelcomeCard />
       <PlatformActionsCard />
       <RegisteredCustomersCard />
-    </main>
+    </div>
   )
 }

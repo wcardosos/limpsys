@@ -5,7 +5,9 @@ export function DefaultLayout() {
   return (
     <>
       <Header />
-      <Outlet />
+      <main className="max-w-5xl mx-auto py-6">
+        <Outlet />
+      </main>
     </>
   )
 }

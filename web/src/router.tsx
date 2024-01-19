@@ -1,12 +1,18 @@
 import { Routes, Route } from 'react-router-dom'
 import { Home } from './views/home'
 import { DefaultLayout } from './common/layouts/default'
+import { Customers } from './views/customers'
 
 export const routes = [
   {
     path: '/',
     element: <Home />,
     name: 'Início',
+  },
+  {
+    path: '/customers',
+    element: <Customers />,
+    name: 'Clientes',
   },
 ]
 

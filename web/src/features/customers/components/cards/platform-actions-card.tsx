@@ -14,7 +14,7 @@ export function PlatformActionsCard() {
       </CardHeader>
       <CardContent className="text-blue-500 grid gap-2">
         <Link to="">Adicionar cliente</Link>
-        <Link to="">Ver clientes cadastrados</Link>
+        <Link to="/customers">Ver clientes cadastrados</Link>
         <Link to="">Calcular melhor rota</Link>
       </CardContent>
     </Card>
