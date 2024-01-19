@@ -7,6 +7,7 @@ import { createCustomerBodySchema } from './schemas/customer/body'
 import { ValidationError } from '@/core/errors/validation'
 import { ZodErrorHandler } from './utils/zod-error-handler'
 import { listAllCustomersQuerySchema } from './schemas/customer/query'
+import { CountCustomersUseCase } from '@/domain/customers/use-cases/count-customers'
 
 @injectable()
 export class CustomerController {
@@ -15,6 +16,8 @@ export class CustomerController {
     private listAllCustomersUseCase: ListAllCustomersUseCase,
     @inject(CreateCustomerUseCase)
     private createCustomerUseCase: CreateCustomerUseCase,
+    @inject(CountCustomersUseCase)
+    private countCustomersUseCase: CountCustomersUseCase,
   ) {}
 
   async index(request: Request, response: Response, next: NextFunction) {
@@ -48,6 +51,16 @@ export class CustomerController {
       await this.createCustomerUseCase.execute({ name, email, phone })
 
       return response.sendStatus(201)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async count(request: Request, response: Response, next: NextFunction) {
+    try {
+      const { count } = await this.countCustomersUseCase.execute()
+
+      return response.json({ count })
     } catch (error) {
       next(error)
     }

@@ -33,4 +33,5 @@ export const queries = {
       $4
     );
   `,
+  count: 'SELECT COUNT(*) FROM customers;',
 }

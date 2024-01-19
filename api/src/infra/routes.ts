@@ -22,6 +22,10 @@ routes.get('/customers', (request, response, next) =>
   customerController.index(request, response, next),
 )
 
-routes.post('/customers', (request, response, next) => {
-  customerController.create(request, response, next)
-})
+routes.post('/customers', (request, response, next) =>
+  customerController.create(request, response, next),
+)
+
+routes.get('/customers/count', (request, response, next) =>
+  customerController.count(request, response, next),
+)

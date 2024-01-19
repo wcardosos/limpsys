@@ -1,4 +1,5 @@
 import { CustomersRepository } from '@/domain/customers/repositories/customers'
+import { CountCustomersUseCase } from '@/domain/customers/use-cases/count-customers'
 import { CreateCustomerUseCase } from '@/domain/customers/use-cases/create-customer'
 import { ListAllCustomersUseCase } from '@/domain/customers/use-cases/list-all-customers'
 import { Connection } from '@/infra/database/connections/connection'
@@ -19,6 +20,7 @@ container.registerSingleton<CustomersRepository>(
 // Use cases
 container.registerSingleton(ListAllCustomersUseCase)
 container.registerSingleton(CreateCustomerUseCase)
+container.registerSingleton(CountCustomersUseCase)
 
 // Controllers
 container.registerSingleton(CustomerController)

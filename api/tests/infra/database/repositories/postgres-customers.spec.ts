@@ -110,4 +110,17 @@ describe('Repository: PostgresCustomers', () => {
       expect(result).toBeNull()
     })
   })
+
+  describe('count', () => {
+    it('should return the customers count', async () => {
+      connectionMock.executeQuery.mockResolvedValueOnce({
+        rows: [{ count: '5' }],
+      })
+
+      const result = await sut.count()
+
+      expect(connectionMock.executeQuery).toHaveBeenCalledOnce()
+      expect(result).toBe(5)
+    })
+  })
 })

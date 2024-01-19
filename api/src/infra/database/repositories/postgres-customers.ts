@@ -54,6 +54,14 @@ export class PostgresCustomersRepository implements CustomersRepository {
     await this.connection.executeQuery(queries.create, customerInsertValues)
   }
 
+  async count(): Promise<number> {
+    const countQueryResult = await this.connection.executeQuery(queries.count)
+
+    const count = parseInt(countQueryResult.rows[0].count)
+
+    return count
+  }
+
   private composeCustomerInsertValues(
     customer: Customer,
   ): CustomerInsertValues {
