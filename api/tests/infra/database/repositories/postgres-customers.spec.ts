@@ -52,7 +52,7 @@ describe('Repository: PostgresCustomers', () => {
         connectionMock.executeQuery.mockResolvedValueOnce({
           rows: [],
         })
-        const expectedQuery = queries.findAll + " AND name LIKE 'test%'"
+        const expectedQuery = queries.findAll + " AND name LIKE '%test%'"
         await sut.findAll({ name: 'test' })
 
         expect(connectionMock.executeQuery).toHaveBeenCalledWith(expectedQuery)
@@ -62,7 +62,7 @@ describe('Repository: PostgresCustomers', () => {
         connectionMock.executeQuery.mockResolvedValueOnce({
           rows: [],
         })
-        const expectedQuery = queries.findAll + " AND email LIKE 'test%'"
+        const expectedQuery = queries.findAll + " AND email LIKE '%test%'"
         await sut.findAll({ email: 'test' })
 
         expect(connectionMock.executeQuery).toHaveBeenCalledWith(expectedQuery)
@@ -72,7 +72,7 @@ describe('Repository: PostgresCustomers', () => {
         connectionMock.executeQuery.mockResolvedValueOnce({
           rows: [],
         })
-        const expectedQuery = queries.findAll + " AND phone LIKE 'test%'"
+        const expectedQuery = queries.findAll + " AND phone LIKE '%test%'"
         await sut.findAll({ phone: 'test' })
 
         expect(connectionMock.executeQuery).toHaveBeenCalledWith(expectedQuery)
