@@ -1,6 +1,13 @@
-import { ReactNode, createContext, useEffect, useState } from 'react'
-import { Customer } from '../entities/customer'
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { LimpsysGateway } from '@/infra/gateways/limpsys'
+import { CustomersContext } from './customers'
+import { Customer } from '../entities/customer'
 
 interface CustomersFilter {
   name?: string
@@ -8,15 +15,14 @@ interface CustomersFilter {
   phone?: string
 }
 
-interface CustomerListTableValues {
+interface CustomerListTableContextValues {
   data: Customer[]
-  setData: (value: Customer[]) => void
   isFetching: boolean
   filterCustomers: (filters: CustomersFilter) => Promise<void>
 }
 
 export const CustomersListTableContext = createContext(
-  {} as CustomerListTableValues,
+  {} as CustomerListTableContextValues,
 )
 
 interface CustomersListTableProviderProps {
@@ -28,15 +34,15 @@ const apiGateway = new LimpsysGateway()
 export function CustomersListTableProvider({
   children,
 }: CustomersListTableProviderProps) {
-  const [data, setData] = useState<Customer[]>([])
   const [isFetching, setIsFetching] = useState<boolean>(true)
+  const { customers, setCustomers } = useContext(CustomersContext)
 
   useEffect(() => {
     apiGateway.fetchCustomers().then((customers) => {
-      setData(customers)
+      setCustomers(customers)
       setIsFetching(false)
     })
-  }, [])
+  }, [setCustomers])
 
   const composeQueryParamsFromFilters = (filters?: CustomersFilter) => {
     const queryParams = []
@@ -57,7 +63,7 @@ export function CustomersListTableProvider({
 
     const customers = await apiGateway.filterCustomers(queryParams)
 
-    setData(customers)
+    setCustomers(customers)
 
     setIsFetching(false)
   }
@@ -65,8 +71,7 @@ export function CustomersListTableProvider({
   return (
     <CustomersListTableContext.Provider
       value={{
-        data,
-        setData,
+        data: customers,
         isFetching,
         filterCustomers,
       }}

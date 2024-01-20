@@ -1,10 +1,11 @@
-import { ReactNode, createContext, useState } from 'react'
+import { ReactNode, createContext, useContext, useState } from 'react'
 import { Customer } from '../entities/customer'
 import { LimpsysGateway } from '@/infra/gateways/limpsys'
+import { CustomersContext } from './customers'
 
 const apiGateway = new LimpsysGateway()
 
-interface CreateCustomerDialogValues {
+interface CreateCustomerDialogContextValues {
   isOpen: boolean
   openDialog: () => void
   closeDialog: () => void
@@ -12,7 +13,7 @@ interface CreateCustomerDialogValues {
 }
 
 export const CreateCustomerDialogContext = createContext(
-  {} as CreateCustomerDialogValues,
+  {} as CreateCustomerDialogContextValues,
 )
 
 interface CreateCustomerDialogProviderProps {
@@ -22,13 +23,18 @@ interface CreateCustomerDialogProviderProps {
 export function CreateCustomerDialogProvider({
   children,
 }: CreateCustomerDialogProviderProps) {
+  const { setCustomers } = useContext(CustomersContext)
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const openDialog = () => setIsOpen(true)
   const closeDialog = () => setIsOpen(false)
 
   const createCustomer = async ({ name, email, phone }: Customer) => {
-    return apiGateway.createCustomer({ name, email, phone })
+    await apiGateway.createCustomer({ name, email, phone })
+
+    const customers = await apiGateway.fetchCustomers()
+
+    setCustomers(customers)
   }
 
   return (

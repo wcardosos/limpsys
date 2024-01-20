@@ -43,6 +43,5 @@ export function useCustomersListTable() {
     table,
     columns,
     isFetching,
-    data,
   }
 }
