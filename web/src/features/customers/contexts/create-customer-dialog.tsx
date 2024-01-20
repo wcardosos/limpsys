@@ -2,6 +2,7 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 import { Customer } from '../entities/customer'
 import { LimpsysGateway } from '@/infra/gateways/limpsys'
 import { CustomersContext } from './customers'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const apiGateway = new LimpsysGateway()
 
@@ -25,6 +26,8 @@ export function CreateCustomerDialogProvider({
 }: CreateCustomerDialogProviderProps) {
   const { setCustomers } = useContext(CustomersContext)
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const navigate = useNavigate()
+  const currentPath = useLocation()
 
   const openDialog = () => setIsOpen(true)
   const closeDialog = () => setIsOpen(false)
@@ -32,9 +35,12 @@ export function CreateCustomerDialogProvider({
   const createCustomer = async ({ name, email, phone }: Customer) => {
     await apiGateway.createCustomer({ name, email, phone })
 
-    const customers = await apiGateway.fetchCustomers()
-
-    setCustomers(customers)
+    if (currentPath.pathname === '/customers') {
+      const customers = await apiGateway.fetchCustomers()
+      setCustomers(customers)
+    } else {
+      navigate('/customers')
+    }
   }
 
   return (

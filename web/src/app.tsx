@@ -5,12 +5,12 @@ import { CustomersProvider } from './features/customers/contexts/customers'
 
 export function App() {
   return (
-    <CustomersProvider>
-      <CreateCustomerDialogProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <CustomersProvider>
+        <CreateCustomerDialogProvider>
           <Router />
-        </BrowserRouter>
-      </CreateCustomerDialogProvider>
-    </CustomersProvider>
+        </CreateCustomerDialogProvider>
+      </CustomersProvider>
+    </BrowserRouter>
   )
 }
