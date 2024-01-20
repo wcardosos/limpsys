@@ -18,7 +18,7 @@ export function PlatformActionsCard() {
           <p className="text-blue-500 cursor-pointer">Adicionar cliente</p>
         </CreateCustomerDialog>
         <Link to="/customers">Ver clientes cadastrados</Link>
-        <Link to="">Calcular melhor rota</Link>
+        <Link to="/route">Calcular melhor rota</Link>
       </CardContent>
     </Card>
   )

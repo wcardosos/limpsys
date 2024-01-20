@@ -27,4 +27,10 @@ export class LimpsysGateway extends AxiosGateway {
   async createCustomer(customer: Customer): Promise<void> {
     await this.post('/customers', customer)
   }
+
+  async calculateRoute() {
+    const route = await this.get('/route')
+
+    return route
+  }
 }

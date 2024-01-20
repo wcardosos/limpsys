@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { Home } from './views/home'
 import { DefaultLayout } from './common/layouts/default'
 import { Customers } from './views/customers'
+import { RouteCalculation } from './views/route-calculation'
 
 export const routes = [
   {
@@ -13,6 +14,11 @@ export const routes = [
     path: '/customers',
     element: <Customers />,
     name: 'Clientes',
+  },
+  {
+    path: '/route',
+    element: <RouteCalculation />,
+    name: 'Rota',
   },
 ]
 

@@ -65,4 +65,16 @@ describe('Gateway: Axios', () => {
       expect(postSpy).toHaveBeenCalledWith('/customers', customerMock)
     })
   })
+
+  describe('calculateRoute', () => {
+    it('should calculate the route', async () => {
+      getSpy.mockResolvedValueOnce(['customer 1', 'customer 2'])
+
+      const result = await sut.calculateRoute()
+
+      expect(getSpy).toHaveBeenCalledOnce()
+      expect(getSpy).toHaveBeenCalledWith('/route')
+      expect(result).toStrictEqual(['customer 1', 'customer 2'])
+    })
+  })
 })
