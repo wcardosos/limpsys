@@ -1,10 +1,12 @@
 import express from 'express'
 import { container } from 'tsyringe'
 import { CustomerController } from './http/controllers/customer'
+import { RouteController } from './http/controllers/route'
 
 export const routes = express.Router()
 
 const customerController = container.resolve(CustomerController)
+const routeController = container.resolve(RouteController)
 
 routes.get('/', (request, response) => {
   return response.send('Welcome to limpsys API!')
@@ -28,4 +30,8 @@ routes.post('/customers', (request, response, next) =>
 
 routes.get('/customers/count', (request, response, next) =>
   customerController.count(request, response, next),
+)
+
+routes.get('/route', (request, response, next) =>
+  routeController.calculate(request, response, next),
 )

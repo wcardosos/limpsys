@@ -1,13 +1,13 @@
-import { Client } from 'pg'
+import { Pool } from 'pg'
 import { Connection } from './connection'
 import { injectable } from 'tsyringe'
 
 @injectable()
 export class PostgresConnection implements Connection {
-  private client: Client
+  private client: Pool
 
   constructor() {
-    this.client = new Client({
+    this.client = new Pool({
       host: 'postgres',
       port: 5432,
       database: process.env.DATABASE_NAME,

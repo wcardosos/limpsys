@@ -1,14 +1,14 @@
 import { PostgresConnection } from '@/infra/database/connections/postgres'
-import { Client } from 'pg'
+import { Pool } from 'pg'
 import { Mock } from 'vitest'
 
 vi.mock('pg', () => {
-  const Client = vi.fn()
-  Client.prototype.connect = vi.fn()
-  Client.prototype.query = vi.fn()
-  Client.prototype.end = vi.fn()
+  const Pool = vi.fn()
+  Pool.prototype.connect = vi.fn()
+  Pool.prototype.query = vi.fn()
+  Pool.prototype.end = vi.fn()
 
-  return { Client }
+  return { Pool }
 })
 
 describe('Connection: Postgres', () => {
@@ -24,7 +24,7 @@ describe('Connection: Postgres', () => {
     it('should connect to database', () => {
       sut.connect()
 
-      expect(Client.prototype.connect).toHaveBeenCalledOnce()
+      expect(Pool.prototype.connect).toHaveBeenCalledOnce()
     })
   })
 
@@ -32,7 +32,7 @@ describe('Connection: Postgres', () => {
     it('should disconnect to database', () => {
       sut.disconnect()
 
-      expect(Client.prototype.end).toHaveBeenCalledOnce()
+      expect(Pool.prototype.end).toHaveBeenCalledOnce()
     })
   })
 
@@ -41,21 +41,21 @@ describe('Connection: Postgres', () => {
 
     it('should execute the query provided', async () => {
       // eslint-disable-next-line prettier/prettier
-      (Client.prototype.query as Mock).mockResolvedValueOnce('query result')
+      (Pool.prototype.query as Mock).mockResolvedValueOnce('query result')
       const result = await sut.executeQuery(queryMock)
 
-      expect(Client.prototype.query).toHaveBeenCalledWith(queryMock, undefined)
+      expect(Pool.prototype.query).toHaveBeenCalledWith(queryMock, undefined)
       expect(result).toBe('query result')
     })
 
     it('should execute the query provided with the passed values', async () => {
       // eslint-disable-next-line prettier/prettier
-      (Client.prototype.query as Mock).mockResolvedValueOnce('query result with values')
+      (Pool.prototype.query as Mock).mockResolvedValueOnce('query result with values')
       const valuesMock = ['value 1', 'value 2']
 
       const result = await sut.executeQuery(queryMock, valuesMock)
 
-      expect(Client.prototype.query).toHaveBeenCalledWith(queryMock, valuesMock)
+      expect(Pool.prototype.query).toHaveBeenCalledWith(queryMock, valuesMock)
       expect(result).toBe('query result with values')
     })
   })
