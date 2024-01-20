@@ -4,21 +4,11 @@ import {
   getCoreRowModel,
 } from '@tanstack/react-table'
 import { Customer } from '../entities/customer'
-import { LimpsysGateway } from '@/infra/gateways/limpsys'
-import { useEffect, useState } from 'react'
-
-const apiGateway = new LimpsysGateway()
+import { useContext } from 'react'
+import { CustomersListTableContext } from '../contexts/customers-list-table'
 
 export function useCustomersListTable() {
-  const [data, setData] = useState<Customer[]>([])
-  const [isFetching, setIsFetching] = useState<boolean>(true)
-
-  useEffect(() => {
-    apiGateway.get('/customers').then((customers) => {
-      setData(customers)
-      setIsFetching(false)
-    })
-  }, [])
+  const { data, isFetching } = useContext(CustomersListTableContext)
 
   const columns: ColumnDef<Customer>[] = [
     {

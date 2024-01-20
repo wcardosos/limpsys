@@ -11,7 +11,6 @@ export function CustomersListTableBody({
   rowModel,
   columns,
 }: CustomersListTableBodyProps) {
-  rowModel.rows = []
   return (
     <TableBody>
       {rowModel.rows?.length ? (
