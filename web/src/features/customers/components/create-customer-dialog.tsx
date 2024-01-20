@@ -1,4 +1,3 @@
-import { Button } from '@/common/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -8,21 +7,20 @@ import {
   DialogTrigger,
 } from '@/common/components/ui/dialog'
 import { CreateCustomerForm } from '@/features/customers/components/forms/create-customer'
-import { useContext } from 'react'
+import { ReactNode, useContext } from 'react'
 import { CreateCustomerDialogContext } from '../contexts/create-customer-dialog'
 
-export function CreateCustomerDialog() {
+interface CreateCustomerDialogProps {
+  children: ReactNode
+}
+
+export function CreateCustomerDialog({ children }: CreateCustomerDialogProps) {
   const { isOpen, openDialog } = useContext(CreateCustomerDialogContext)
 
   return (
     <Dialog open={isOpen}>
       <DialogTrigger asChild onClick={openDialog}>
-        <Button
-          variant="ghost"
-          className="text-blue-500 hover:text-blue-500 hover:bg-blue-100"
-        >
-          Adicionar cliente
-        </Button>
+        {children}
       </DialogTrigger>
       <DialogContent className="w-[512px]">
         <DialogHeader>
