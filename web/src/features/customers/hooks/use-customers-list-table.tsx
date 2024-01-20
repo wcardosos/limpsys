@@ -4,22 +4,21 @@ import {
   getCoreRowModel,
 } from '@tanstack/react-table'
 import { Customer } from '../entities/customer'
+import { LimpsysGateway } from '@/infra/gateways/limpsys'
+import { useEffect, useState } from 'react'
+
+const apiGateway = new LimpsysGateway()
 
 export function useCustomersListTable() {
-  const data: Customer[] = [
-    {
-      id: '1',
-      name: 'Wagner Cardoso',
-      email: 'wagner@limpsys.com',
-      phone: '11111111111',
-    },
-    {
-      id: '2',
-      name: 'Janaíres Cardoso',
-      email: 'janny@limpsys.com',
-      phone: '22222222222',
-    },
-  ]
+  const [data, setData] = useState<Customer[]>([])
+  const [isFetching, setIsFetching] = useState<boolean>(true)
+
+  useEffect(() => {
+    apiGateway.get('/customers').then((customers) => {
+      setData(customers)
+      setIsFetching(false)
+    })
+  }, [])
 
   const columns: ColumnDef<Customer>[] = [
     {
@@ -53,5 +52,7 @@ export function useCustomersListTable() {
   return {
     table,
     columns,
+    isFetching,
+    data,
   }
 }

@@ -11,10 +11,13 @@ export function CustomersListTableFooter({
 }: CustomersListTableFooterProps) {
   return (
     <div className="flex items-center justify-end space-x-2 py-4">
-      <div className="flex-1 text-sm text-muted-foreground">
-        Página {table.getState().pagination.pageIndex + 1} de{' '}
-        {table.getPageCount()} páginas.
-      </div>
+      {table.getPageCount() ? (
+        <div className="flex-1 text-sm text-muted-foreground">
+          Página {table.getState().pagination.pageIndex + 1} de{' '}
+          {table.getPageCount()} páginas.
+        </div>
+      ) : null}
+
       <div className="space-x-2">
         <Button
           variant="outline"
