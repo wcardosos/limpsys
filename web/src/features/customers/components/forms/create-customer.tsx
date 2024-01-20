@@ -31,7 +31,9 @@ const createCustomerFormSchema = z.object({
 })
 type CreateCustomerFormData = z.infer<typeof createCustomerFormSchema>
 export function CreateCustomerForm() {
-  const { closeDialog } = useContext(CreateCustomerDialogContext)
+  const { closeDialog, createCustomer } = useContext(
+    CreateCustomerDialogContext,
+  )
   const createCustomerForm = useForm<CreateCustomerFormData>({
     resolver: zodResolver(createCustomerFormSchema),
     defaultValues: {
@@ -42,8 +44,8 @@ export function CreateCustomerForm() {
   })
   const { toast } = useToast()
 
-  const onSubmitCreateCustomer = (formValues: CreateCustomerFormData) => {
-    console.log(`form values: ${JSON.stringify(formValues)}`)
+  const onSubmitCreateCustomer = async (formValues: CreateCustomerFormData) => {
+    await createCustomer(formValues)
 
     closeDialog()
     toast({

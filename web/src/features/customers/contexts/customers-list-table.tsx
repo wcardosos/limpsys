@@ -32,7 +32,7 @@ export function CustomersListTableProvider({
   const [isFetching, setIsFetching] = useState<boolean>(true)
 
   useEffect(() => {
-    apiGateway.get('/customers').then((customers) => {
+    apiGateway.fetchCustomers().then((customers) => {
       setData(customers)
       setIsFetching(false)
     })
@@ -55,7 +55,7 @@ export function CustomersListTableProvider({
 
     setIsFetching(true)
 
-    const customers = await apiGateway.get(`/customers${queryParams}`)
+    const customers = await apiGateway.filterCustomers(queryParams)
 
     setData(customers)
 

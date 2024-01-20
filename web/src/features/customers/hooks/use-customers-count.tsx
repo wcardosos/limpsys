@@ -8,7 +8,7 @@ export function useCustomersCount() {
   const [isFetching, setIsFetching] = useState<boolean>(true)
 
   useEffect(() => {
-    apiGateway.get('/customers/count').then(({ count }) => {
+    apiGateway.fetchCustomersCount().then((count) => {
       setCount(count)
       setIsFetching(false)
     })
