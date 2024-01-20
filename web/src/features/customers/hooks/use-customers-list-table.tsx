@@ -19,24 +19,6 @@ export function useCustomersListTable() {
       email: 'janny@limpsys.com',
       phone: '22222222222',
     },
-    {
-      id: '3',
-      name: 'Wagner Cardoso',
-      email: 'wagner@limpsys.com',
-      phone: '11111111111',
-    },
-    {
-      id: '4',
-      name: 'Janaíres Cardoso',
-      email: 'janny@limpsys.com',
-      phone: '22222222222',
-    },
-    {
-      id: '5',
-      name: 'Wagner Cardoso',
-      email: 'wagner@limpsys.com',
-      phone: '11111111111',
-    },
   ]
 
   const columns: ColumnDef<Customer>[] = [
@@ -60,6 +42,12 @@ export function useCustomersListTable() {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    manualPagination: true,
+    initialState: {
+      pagination: {
+        pageSize: 5,
+      },
+    },
   })
 
   return {

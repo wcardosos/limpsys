@@ -12,25 +12,24 @@ export function CustomersListTableFooter({
   return (
     <div className="flex items-center justify-end space-x-2 py-4">
       <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{' '}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
+        Página {table.getState().pagination.pageIndex + 1} de{' '}
+        {table.getPageCount()} páginas.
       </div>
       <div className="space-x-2">
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
+          onClick={() => console.log('a implementar')}
+          disabled
         >
-          Previous
+          Anterior
         </Button>
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
+          onClick={() => console.log('a implementar')}
         >
-          Next
+          Próximo
         </Button>
       </div>
     </div>
