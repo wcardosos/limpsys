@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CreateCustomerDialogContext } from '../../contexts/create-customer-dialog'
 import { useContext } from 'react'
+import { useToast } from '@/common/components/ui/use-toast'
 
 const createCustomerFormSchema = z.object({
   name: z
@@ -39,11 +40,16 @@ export function CreateCustomerForm() {
       phone: '',
     },
   })
+  const { toast } = useToast()
 
   const onSubmitCreateCustomer = (formValues: CreateCustomerFormData) => {
     console.log(`form values: ${JSON.stringify(formValues)}`)
 
     closeDialog()
+    toast({
+      description: `Cliente ${formValues.name} criado com sucesso!`,
+      className: 'bg-green-100 border-green-500 text-green-500',
+    })
   }
 
   return (
