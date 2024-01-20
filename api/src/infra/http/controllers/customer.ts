@@ -46,9 +46,15 @@ export class CustomerController {
           ZodErrorHandler.getMessage(result.error.message),
         )
 
-      const { name, email, phone } = result.data
+      const { name, email, phone, xCoordinate, yCoordinate } = result.data
 
-      await this.createCustomerUseCase.execute({ name, email, phone })
+      await this.createCustomerUseCase.execute({
+        name,
+        email,
+        phone,
+        xCoordinate,
+        yCoordinate,
+      })
 
       return response.sendStatus(201)
     } catch (error) {

@@ -7,6 +7,8 @@ interface CreateCustomerUseCaseRequest {
   name: string
   email: string
   phone: string
+  xCoordinate: number
+  yCoordinate: number
 }
 
 interface CreateCustomerUseCaseResponse {
@@ -24,6 +26,8 @@ export class CreateCustomerUseCase {
     name,
     email,
     phone,
+    xCoordinate,
+    yCoordinate,
   }: CreateCustomerUseCaseRequest): Promise<CreateCustomerUseCaseResponse> {
     const customerWithSameEmail =
       await this.customersRepository.findByEmail(email)
@@ -34,6 +38,8 @@ export class CreateCustomerUseCase {
       name,
       email,
       phone,
+      xCoordinate,
+      yCoordinate,
     })
 
     await this.customersRepository.create(customer)

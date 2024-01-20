@@ -8,6 +8,7 @@ export const queries = {
       created_at,
       updated_at
     FROM customers WHERE deleted_at IS NULL
+    ORDER BY created_at DESC
   `,
   findByEmail: `
     SELECT
@@ -25,12 +26,16 @@ export const queries = {
       id,
       name,
       email,
-      phone
+      phone,
+      x_coordinate,
+      y_coordinate
     ) VALUES (
       $1,
       $2,
       $3,
-      $4
+      $4,
+      $5,
+      $6
     );
   `,
   count: 'SELECT COUNT(*) FROM customers;',

@@ -5,6 +5,8 @@ export interface CustomerProps {
   name: string
   email: string
   phone: string
+  xCoordinate: number
+  yCoordinate: number
 }
 
 export class Customer extends Entity<CustomerProps> {
@@ -18,6 +20,14 @@ export class Customer extends Entity<CustomerProps> {
 
   get phone() {
     return this.props.phone
+  }
+
+  get xCoordinate() {
+    return this.props.xCoordinate
+  }
+
+  get yCoordinate() {
+    return this.props.yCoordinate
   }
 
   static create(props: CustomerProps, id?: UniqueId) {

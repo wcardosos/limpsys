@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { CustomersRepository } from '@/domain/customers/repositories/customers'
 import { Connection } from '../connections/connection'
 import { Customer } from '@/domain/customers/entities/customer'
@@ -6,7 +7,7 @@ import { CustomerDatabaseSchema } from '../schemas/customer'
 import { CustomerMapper } from '@/domain/customers/mappers/customer'
 import { inject, injectable } from 'tsyringe'
 
-type CustomerInsertValues = [string, string, string, string]
+type CustomerInsertValues = [string, string, string, string, number, number]
 
 @injectable()
 export class PostgresCustomersRepository implements CustomersRepository {
@@ -32,8 +33,23 @@ export class PostgresCustomersRepository implements CustomersRepository {
       findQueryStatements.join(' '),
     )
 
-    return customerQueryResult.rows.map((result: CustomerDatabaseSchema) =>
-      CustomerMapper.toDomain(result),
+    return customerQueryResult.rows.map(
+      ({
+        id,
+        name,
+        email,
+        phone,
+        x_coordinate,
+        y_coordinate,
+      }: CustomerDatabaseSchema) =>
+        CustomerMapper.toDomain({
+          id,
+          name,
+          email,
+          phone,
+          xCoordinate: x_coordinate,
+          yCoordinate: y_coordinate,
+        }),
     )
   }
 
@@ -65,6 +81,13 @@ export class PostgresCustomersRepository implements CustomersRepository {
   private composeCustomerInsertValues(
     customer: Customer,
   ): CustomerInsertValues {
-    return [customer.id.value, customer.name, customer.email, customer.phone]
+    return [
+      customer.id.value,
+      customer.name,
+      customer.email,
+      customer.phone,
+      customer.xCoordinate,
+      customer.yCoordinate,
+    ]
   }
 }

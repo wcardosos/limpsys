@@ -8,6 +8,8 @@ describe('Mapper: Customer', () => {
     name: customerMock.name,
     email: customerMock.email,
     phone: customerMock.phone,
+    xCoordinate: customerMock.xCoordinate,
+    yCoordinate: customerMock.yCoordinate,
   }
 
   describe('toObject', () => {

@@ -11,6 +11,8 @@ export function makeCustomer(
       name: faker.person.fullName(),
       email: faker.internet.email(),
       phone: faker.phone.number(),
+      xCoordinate: faker.number.int(),
+      yCoordinate: faker.number.int(),
       ...override,
     },
     id,

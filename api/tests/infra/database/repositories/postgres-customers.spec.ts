@@ -29,12 +29,16 @@ describe('Repository: PostgresCustomers', () => {
             name: customersMock[0].name,
             email: customersMock[0].email,
             phone: customersMock[0].phone,
+            x_coordinate: customersMock[0].xCoordinate,
+            y_coordinate: customersMock[0].yCoordinate,
           },
           {
             id: customersMock[1].id.value,
             name: customersMock[1].name,
             email: customersMock[1].email,
             phone: customersMock[1].phone,
+            x_coordinate: customersMock[1].xCoordinate,
+            y_coordinate: customersMock[1].yCoordinate,
           },
         ],
       })
