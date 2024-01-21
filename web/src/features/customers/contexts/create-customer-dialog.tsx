@@ -32,8 +32,20 @@ export function CreateCustomerDialogProvider({
   const openDialog = () => setIsOpen(true)
   const closeDialog = () => setIsOpen(false)
 
-  const createCustomer = async ({ name, email, phone }: Customer) => {
-    await apiGateway.createCustomer({ name, email, phone })
+  const createCustomer = async ({
+    name,
+    email,
+    phone,
+    xCoordinate,
+    yCoordinate,
+  }: Customer) => {
+    await apiGateway.createCustomer({
+      name,
+      email,
+      phone,
+      xCoordinate,
+      yCoordinate,
+    })
 
     if (currentPath.pathname === '/customers') {
       const customers = await apiGateway.fetchCustomers()

@@ -3,4 +3,6 @@ export interface Customer {
   name: string
   email: string
   phone: string
+  xCoordinate: number
+  yCoordinate: number
 }

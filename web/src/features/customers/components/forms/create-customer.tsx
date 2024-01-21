@@ -23,13 +23,24 @@ const createCustomerFormSchema = z.object({
   email: z.string().email('O e-mail informado é inválido'),
   phone: z
     .string()
-    .length(
-      11,
-      'O número de telefone deve ser preenchido sem caracteres especiais e com DDD',
-    )
-    .regex(/\d+/, 'O telefone deve ser preenchido apenas com números'),
+    .length(11, 'O número de telefone deve ter 11 dígitos')
+    .regex(/^\d+$/, 'O telefone deve ser preenchido apenas com números'),
+  xCoordinate: z
+    .number({
+      invalid_type_error: 'A coordenada X deve ser um número',
+    })
+    .int('A coordenada X deve ser um número inteiro')
+    .positive('A coordenada X deve ser positiva'),
+  yCoordinate: z
+    .number({
+      invalid_type_error: 'A coordenada Y deve ser um número',
+    })
+    .int('A coordenada Y deve ser um número inteiro')
+    .positive('A coordenada Y deve ser positiva'),
 })
+
 type CreateCustomerFormData = z.infer<typeof createCustomerFormSchema>
+
 export function CreateCustomerForm() {
   const { closeDialog, createCustomer } = useContext(
     CreateCustomerDialogContext,
@@ -40,6 +51,8 @@ export function CreateCustomerForm() {
       name: '',
       email: '',
       phone: '',
+      xCoordinate: 0,
+      yCoordinate: 0,
     },
   })
   const { toast } = useToast()
@@ -58,52 +71,90 @@ export function CreateCustomerForm() {
     <Form {...createCustomerForm}>
       <form
         onSubmit={createCustomerForm.handleSubmit(onSubmitCreateCustomer)}
-        className="space-y-4"
+        className="space-y-6"
       >
-        <FormField
-          control={createCustomerForm.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-gray-800 font-normal">Nome</FormLabel>
-              <FormControl>
-                <Input className="focus-visible:ring-blue-500" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={createCustomerForm.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-gray-800 font-normal">
-                E-mail
-              </FormLabel>
-              <FormControl>
-                <Input className="focus-visible:ring-blue-500" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={createCustomerForm.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-gray-800 font-normal">
-                Telefone
-              </FormLabel>
-              <FormControl>
-                <Input className="focus-visible:ring-blue-500" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="pt-2 flex gap-2 justify-end">
+        <div className="flex gap-6">
+          <div className="space-y-4 w-1/2">
+            <FormField
+              control={createCustomerForm.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-800 font-normal">
+                    Nome
+                  </FormLabel>
+                  <FormControl>
+                    <Input className="focus-visible:ring-blue-500" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={createCustomerForm.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-800 font-normal">
+                    E-mail
+                  </FormLabel>
+                  <FormControl>
+                    <Input className="focus-visible:ring-blue-500" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={createCustomerForm.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-800 font-normal">
+                    Telefone (com DDD)
+                  </FormLabel>
+                  <FormControl>
+                    <Input className="focus-visible:ring-blue-500" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="space-y-4 w-1/2">
+            <FormField
+              control={createCustomerForm.control}
+              name="xCoordinate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-800 font-normal">
+                    Coordenada X
+                  </FormLabel>
+                  <FormControl>
+                    <Input className="focus-visible:ring-blue-500" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={createCustomerForm.control}
+              name="yCoordinate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-800 font-normal">
+                    Coordenada Y
+                  </FormLabel>
+                  <FormControl>
+                    <Input className="focus-visible:ring-blue-500" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+        <div className="flex gap-2 justify-end">
           <Button
             className="border-blue-500 text-blue-500 hover:bg-blue-50 hover:text-blue-500 font-normal"
             type="button"

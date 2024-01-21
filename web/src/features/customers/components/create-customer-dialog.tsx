@@ -22,7 +22,7 @@ export function CreateCustomerDialog({ children }: CreateCustomerDialogProps) {
       <DialogTrigger asChild onClick={openDialog}>
         {children}
       </DialogTrigger>
-      <DialogContent className="w-[512px]">
+      <DialogContent className="w-[512px] max-h-[600px]">
         <DialogHeader>
           <DialogTitle className="text-blue-500 text-xl">
             Cadastro de cliente
