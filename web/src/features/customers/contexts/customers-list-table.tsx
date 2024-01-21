@@ -9,20 +9,17 @@ import { LimpsysGateway } from '@/infra/gateways/limpsys'
 import { CustomersContext } from './customers'
 import { Customer } from '../entities/customer'
 
-interface CustomersFilter {
-  name?: string
-  email?: string
-  phone?: string
-  page?: number
-}
-
 interface CustomerListTableContextValues {
   data: Customer[]
   currentPage: number
   hasNextPage: boolean
   hasPreviousPage: boolean
   isFetching: boolean
-  filterCustomers: (filters: CustomersFilter) => Promise<void>
+  hasFilterValues: boolean
+  filterCustomers: () => Promise<void>
+  setNameFilter: (value: string) => void
+  setEmailFilter: (value: string) => void
+  setPhoneFilter: (value: string) => void
 }
 
 export const CustomersListTableContext = createContext(
@@ -42,7 +39,12 @@ export function CustomersListTableProvider({
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [hasNextPage, setHasNextPage] = useState<boolean>(false)
   const [hasPreviousPage, setHasPreviousPage] = useState<boolean>(false)
+  const [nameFilter, setNameFilter] = useState<string>('')
+  const [emailFilter, setEmailFilter] = useState<string>('')
+  const [phoneFilter, setPhoneFilter] = useState<string>('')
   const { customers, setCustomers } = useContext(CustomersContext)
+
+  const hasFilterValues = Boolean(nameFilter || emailFilter || phoneFilter)
 
   useEffect(() => {
     apiGateway
@@ -56,20 +58,23 @@ export function CustomersListTableProvider({
       })
   }, [setCustomers])
 
-  const composeQueryParamsFromFilters = (filters?: CustomersFilter) => {
+  const composeQueryParamsFromFilters = () => {
     const queryParams = []
 
-    if (filters) {
-      for (const [filter, value] of Object.entries(filters)) {
-        if (value) queryParams.push(`${filter}=${value}`)
-      }
+    for (const [filter, value] of Object.entries({
+      name: nameFilter,
+      email: emailFilter,
+      phone: phoneFilter,
+      page: currentPage,
+    })) {
+      if (value) queryParams.push(`${filter}=${value}`)
     }
 
     return queryParams.length ? `?${queryParams.join('&')}` : ''
   }
 
-  const filterCustomers = async (filters: CustomersFilter) => {
-    const queryParams = composeQueryParamsFromFilters(filters)
+  const filterCustomers = async () => {
+    const queryParams = composeQueryParamsFromFilters()
 
     setIsFetching(true)
 
@@ -92,7 +97,11 @@ export function CustomersListTableProvider({
         hasNextPage,
         hasPreviousPage,
         isFetching,
+        hasFilterValues,
         filterCustomers,
+        setNameFilter,
+        setEmailFilter,
+        setPhoneFilter,
       }}
     >
       {children}

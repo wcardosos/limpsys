@@ -31,7 +31,7 @@ export class ListCustomersUseCase {
   async execute({
     filters,
   }: ListCustomersUseCaseRequest): Promise<ListCustomerUseCaseResponse> {
-    const totalCustomersCount = await this.customersRepository.count()
+    const totalCustomersCount = await this.customersRepository.count(filters)
     const currentPage = filters?.page || 1
 
     const { hasNextPage, hasPreviousPage } = this.getPagination(

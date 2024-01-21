@@ -61,6 +61,15 @@ export const queries = {
       $6
     );
   `,
-  count: 'SELECT COUNT(*) FROM customers WHERE deleted_at IS NULL;',
-  delete: 'UPDATE customers SET deleted_at = NOW() WHERE id = $1',
+  count: `
+    SELECT
+      COUNT(*)
+    FROM customers
+    WHERE
+      deleted_at IS NULL
+      AND name LIKE $1
+      AND email LIKE $2
+      AND phone LIKE $3;
+`,
+  delete: 'UPDATE customers SET deleted_at = NOW() WHERE id = $1;',
 }

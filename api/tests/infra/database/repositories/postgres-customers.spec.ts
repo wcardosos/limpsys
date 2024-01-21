@@ -148,5 +148,27 @@ describe('Repository: PostgresCustomers', () => {
       expect(connectionMock.executeQuery).toHaveBeenCalledOnce()
       expect(result).toBe(5)
     })
+
+    it('should return the customers count with filters', async () => {
+      connectionMock.executeQuery.mockResolvedValueOnce({
+        rows: [{ count: '5' }],
+      })
+      const filtersMock = {
+        name: 'name',
+        email: 'email',
+        phone: 'phone',
+        page: 1,
+      }
+
+      const result = await sut.count(filtersMock)
+
+      expect(connectionMock.executeQuery).toHaveBeenCalledOnce()
+      expect(connectionMock.executeQuery).toHaveBeenCalledWith(queries.count, [
+        '%name%',
+        '%email%',
+        '%phone%',
+      ])
+      expect(result).toBe(5)
+    })
   })
 })

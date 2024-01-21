@@ -12,18 +12,24 @@ type FiltersInput = {
 }
 
 export function CustomerListFilterForm() {
-  const { filterCustomers } = useContext(CustomersListTableContext)
+  const {
+    filterCustomers,
+    setNameFilter,
+    setEmailFilter,
+    setPhoneFilter,
+    hasFilterValues,
+  } = useContext(CustomersListTableContext)
 
-  const onFilterCustomersSubmit: SubmitHandler<FiltersInput> = (formValues) => {
-    filterCustomers(formValues)
+  const onFilterCustomersSubmit: SubmitHandler<FiltersInput> = () => {
+    filterCustomers()
   }
 
   const { register, handleSubmit, watch } = useForm<FiltersInput>()
-  const nameFilter = watch('name')
-  const emailFilter = watch('email')
-  const phoneFilter = watch('phone')
+  setNameFilter(watch('name'))
+  setEmailFilter(watch('email'))
+  setPhoneFilter(watch('phone'))
 
-  const isFilterButtonDisabled = !nameFilter && !emailFilter && !phoneFilter
+  const isFilterButtonDisabled = !hasFilterValues
 
   return (
     <form

@@ -8,6 +8,12 @@ import { CustomerMapper } from '@/domain/customers/mappers/customer'
 import { inject, injectable } from 'tsyringe'
 
 type CustomerInsertValues = [string, string, string, string, number, number]
+type CustomersFilters = {
+  name?: string
+  email?: string
+  phone?: string
+  page?: number
+}
 
 @injectable()
 export class PostgresCustomersRepository implements CustomersRepository {
@@ -17,20 +23,13 @@ export class PostgresCustomersRepository implements CustomersRepository {
 
   async findAll(
     itemsPerPage: number,
-    filters?: {
-      name?: string
-      email?: string
-      phone?: string
-      page?: number
-    },
+    filters?: CustomersFilters,
   ): Promise<Customer[]> {
     const page = filters?.page || 1
     const offset = (page - 1) * itemsPerPage
 
     const filtersQueryValues = [
-      filters?.name ? `%${filters.name}%` : '%%',
-      filters?.email ? `%${filters.email}%` : '%%',
-      filters?.phone ? `%${filters.phone}%` : '%%',
+      ...this.composeFilters(filters),
       offset,
       itemsPerPage,
     ]
@@ -88,8 +87,11 @@ export class PostgresCustomersRepository implements CustomersRepository {
     await this.connection.executeQuery(queries.create, customerInsertValues)
   }
 
-  async count(): Promise<number> {
-    const countQueryResult = await this.connection.executeQuery(queries.count)
+  async count(filters?: CustomersFilters): Promise<number> {
+    const countQueryResult = await this.connection.executeQuery(
+      queries.count,
+      this.composeFilters(filters),
+    )
 
     const count = parseInt(countQueryResult.rows[0].count)
 
@@ -110,6 +112,14 @@ export class PostgresCustomersRepository implements CustomersRepository {
       customer.phone,
       customer.xCoordinate,
       customer.yCoordinate,
+    ]
+  }
+
+  private composeFilters(filters?: CustomersFilters) {
+    return [
+      filters?.name ? `%${filters.name}%` : '%%',
+      filters?.email ? `%${filters.email}%` : '%%',
+      filters?.phone ? `%${filters.phone}%` : '%%',
     ]
   }
 }
