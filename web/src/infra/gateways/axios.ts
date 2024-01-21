@@ -21,4 +21,8 @@ export class AxiosGateway extends ApiGateway {
   async post(resource: string, body: any) {
     return this.client.post(resource, body)
   }
+
+  async delete(resource: string) {
+    return this.client.delete(resource)
+  }
 }

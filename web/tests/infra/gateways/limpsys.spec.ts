@@ -13,6 +13,7 @@ describe('Gateway: Axios', () => {
   
   const getSpy = vi.spyOn(LimpsysGateway.prototype, 'get')
   const postSpy = vi.spyOn(LimpsysGateway.prototype, 'post')
+  const deleteSpy = vi.spyOn(LimpsysGateway.prototype, 'delete')
 
   describe('fetchCustomers', () => {
     it('should fetch all customers', async () => {
@@ -56,13 +57,25 @@ describe('Gateway: Axios', () => {
       const customerMock: Customer = {
         name: 'Wagner Cardoso',
         email: 'wagner@limpsys.com',
-        phone: '11111111111'
+        phone: '11111111111',
+        xCoordinate: 1,
+        yCoordinate: 2
       }
 
       await sut.createCustomer(customerMock)
 
       expect(postSpy).toHaveBeenCalledOnce()
       expect(postSpy).toHaveBeenCalledWith('/customers', customerMock)
+    })
+  })
+
+  describe('deleteCustomer', () => {
+    it('should delete a customer', async () => {
+      const idMock = 'id mock'
+      await sut.deleteCustomer(idMock)
+
+      expect(deleteSpy).toHaveBeenCalledOnce()
+      expect(deleteSpy).toHaveBeenCalledWith(`/customers/${idMock}`)
     })
   })
 

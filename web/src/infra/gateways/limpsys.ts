@@ -43,4 +43,8 @@ export class LimpsysGateway extends AxiosGateway {
 
     return route
   }
+
+  async deleteCustomer(customerId: string): Promise<void> {
+    await this.delete(`/customers/${customerId}`)
+  }
 }

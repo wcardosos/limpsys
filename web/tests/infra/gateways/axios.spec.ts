@@ -40,4 +40,16 @@ describe('Gateway: Axios', () => {
       expect(postAxiosSpy).toHaveBeenCalledWith('url', { test: 'success' })
     })
   })
+  describe('delete', () => {
+    const deleteAxiosSpy = vi.spyOn(Axios.prototype, 'delete')
+
+    it('should make a delete request', async () => {
+      const urlMock = 'url'
+
+      await sut.delete(urlMock)
+
+      expect(deleteAxiosSpy).toHaveBeenCalledOnce()
+      expect(deleteAxiosSpy).toHaveBeenCalledWith('url')
+    })
+  })
 })

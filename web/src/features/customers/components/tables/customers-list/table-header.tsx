@@ -11,20 +11,22 @@ export function CustomersListTableHeader({
 }: CustomersListTableHeaderProps) {
   return (
     <TableHeader>
-      {headerGroups.map((headerGroup) => (
-        <TableRow key={headerGroup.id}>
-          {headerGroup.headers.map((header) => (
-            <TableHead key={header.id}>
-              {header.isPlaceholder
-                ? null
-                : flexRender(
-                    header.column.columnDef.header,
-                    header.getContext(),
-                  )}
-            </TableHead>
-          ))}
-        </TableRow>
-      ))}
+      {headerGroups.map((headerGroup) => {
+        return (
+          <TableRow key={headerGroup.id}>
+            {headerGroup.headers.map((header) => (
+              <TableHead key={header.id}>
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+              </TableHead>
+            ))}
+          </TableRow>
+        )
+      })}
     </TableHeader>
   )
 }

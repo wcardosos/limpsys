@@ -17,6 +17,7 @@ interface CustomerListTableContextValues {
   isFetching: boolean
   hasFilterValues: boolean
   filterCustomers: (page?: number) => Promise<void>
+  deleteCustomer: (customerId: string) => Promise<void>
   setNameFilter: (value: string) => void
   setEmailFilter: (value: string) => void
   setPhoneFilter: (value: string) => void
@@ -89,6 +90,17 @@ export function CustomersListTableProvider({
     setIsFetching(false)
   }
 
+  const deleteCustomer = async (customerId: string) => {
+    setIsFetching(true)
+
+    await apiGateway.deleteCustomer(customerId)
+
+    const { customers } = await apiGateway.fetchCustomers()
+    setCustomers(customers)
+
+    setIsFetching(false)
+  }
+
   return (
     <CustomersListTableContext.Provider
       value={{
@@ -99,6 +111,7 @@ export function CustomersListTableProvider({
         isFetching,
         hasFilterValues,
         filterCustomers,
+        deleteCustomer,
         setNameFilter,
         setEmailFilter,
         setPhoneFilter,

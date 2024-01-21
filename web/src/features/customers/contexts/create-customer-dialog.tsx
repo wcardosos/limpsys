@@ -48,7 +48,7 @@ export function CreateCustomerDialogProvider({
     })
 
     if (currentPath.pathname === '/customers') {
-      const customers = await apiGateway.fetchCustomers()
+      const { customers } = await apiGateway.fetchCustomers()
       setCustomers(customers)
     } else {
       navigate('/customers')

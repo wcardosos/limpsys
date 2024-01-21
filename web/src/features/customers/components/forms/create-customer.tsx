@@ -25,13 +25,13 @@ const createCustomerFormSchema = z.object({
     .string()
     .length(11, 'O número de telefone deve ter 11 dígitos')
     .regex(/^\d+$/, 'O telefone deve ser preenchido apenas com números'),
-  xCoordinate: z
+  xCoordinate: z.coerce
     .number({
       invalid_type_error: 'A coordenada X deve ser um número',
     })
     .int('A coordenada X deve ser um número inteiro')
     .positive('A coordenada X deve ser positiva'),
-  yCoordinate: z
+  yCoordinate: z.coerce
     .number({
       invalid_type_error: 'A coordenada Y deve ser um número',
     })
