@@ -13,8 +13,8 @@ export const queries = {
     WHERE
       deleted_at IS NULL
       AND name LIKE $1
-      AND name LIKE $2
-      AND name LIKE $3
+      AND email LIKE $2
+      AND phone LIKE $3
     ORDER BY created_at DESC
     OFFSET $4 LIMIT $5;
   `,
