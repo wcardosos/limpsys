@@ -26,6 +26,16 @@ export function useCustomersListTable() {
       header: 'Telefone',
       cell: ({ row }) => <div>{row.getValue('phone')}</div>,
     },
+    {
+      accessorKey: 'xCoordinate',
+      header: 'Coordenada X',
+      cell: ({ row }) => <div>{row.getValue('xCoordinate')}</div>,
+    },
+    {
+      accessorKey: 'yCoordinate',
+      header: 'Coordenada Y',
+      cell: ({ row }) => <div>{row.getValue('yCoordinate')}</div>,
+    },
   ]
   const table = useReactTable({
     data,

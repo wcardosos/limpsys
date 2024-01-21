@@ -5,6 +5,8 @@ export const queries = {
       name,
       email,
       phone,
+      x_coordinate,
+      y_coordinate,
       created_at,
       updated_at
     FROM customers WHERE deleted_at IS NULL
