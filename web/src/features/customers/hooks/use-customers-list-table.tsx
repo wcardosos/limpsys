@@ -21,6 +21,10 @@ export function useCustomersListTable() {
     CustomersListTableContext,
   )
 
+  const onDeleteConsumer = async (id: string) => {
+    await deleteCustomer(id)
+  }
+
   const columns: ColumnDef<Customer>[] = [
     {
       accessorKey: 'name',
@@ -66,7 +70,7 @@ export function useCustomersListTable() {
             </DropdownMenuLabel>
             <DropdownMenuItem
               className="text-gray-800 cursor-pointer"
-              onClick={() => deleteCustomer(row.original.id!)}
+              onClick={() => onDeleteConsumer(row.original.id!)}
             >
               Excluir
             </DropdownMenuItem>

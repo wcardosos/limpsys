@@ -3,20 +3,29 @@ import { RouteCalculationContext } from '../contexts/route-calculation'
 import { Button } from '@/common/components/ui/button'
 import { RouteList } from './route-list'
 import { Spinner } from '@/common/components/spinner'
+import { useErrorFeedback } from '@/common/hooks/use-error-feedback'
 
 export function RouteContainer() {
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const [isRouteAlreadyFetched, setIsRouteAlreadyFetched] =
     useState<boolean>(false)
   const { route, calculateRoute } = useContext(RouteCalculationContext)
+  const { showErrorFeedback } = useErrorFeedback()
 
-  const onCalculateRoute = () => {
-    setIsFetching(true)
+  const onCalculateRoute = async () => {
+    try {
+      setIsFetching(true)
 
-    calculateRoute()
+      await calculateRoute()
 
-    setIsRouteAlreadyFetched(true)
-    setIsFetching(false)
+      setIsRouteAlreadyFetched(true)
+    } catch (error) {
+      showErrorFeedback(
+        'A rota não pôde ser calculada. Tente novamente mais tarde',
+      )
+    } finally {
+      setIsFetching(false)
+    }
   }
 
   return (
@@ -29,7 +38,11 @@ export function RouteContainer() {
           Calcular melhor rota
         </Button>
       </div>
-      {isFetching ? <Spinner /> : null}
+      {isFetching ? (
+        <div className="flex justify-center">
+          <Spinner />
+        </div>
+      ) : null}
       {route.length ? <RouteList /> : null}
       {!isRouteAlreadyFetched ? (
         <p className="text-center mt-16">

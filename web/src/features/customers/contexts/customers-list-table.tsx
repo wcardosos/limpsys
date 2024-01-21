@@ -8,6 +8,7 @@ import {
 import { LimpsysGateway } from '@/infra/gateways/limpsys'
 import { CustomersContext } from './customers'
 import { Customer } from '../entities/customer'
+import { useErrorFeedback } from '@/common/hooks/use-error-feedback'
 
 interface CustomerListTableContextValues {
   data: Customer[]
@@ -44,6 +45,7 @@ export function CustomersListTableProvider({
   const [emailFilter, setEmailFilter] = useState<string>('')
   const [phoneFilter, setPhoneFilter] = useState<string>('')
   const { customers, setCustomers } = useContext(CustomersContext)
+  const { showErrorFeedback } = useErrorFeedback()
 
   const hasFilterValues = Boolean(nameFilter || emailFilter || phoneFilter)
 
@@ -91,14 +93,18 @@ export function CustomersListTableProvider({
   }
 
   const deleteCustomer = async (customerId: string) => {
-    setIsFetching(true)
+    try {
+      setIsFetching(true)
 
-    await apiGateway.deleteCustomer(customerId)
+      await apiGateway.deleteCustomer(customerId)
 
-    const { customers } = await apiGateway.fetchCustomers()
-    setCustomers(customers)
-
-    setIsFetching(false)
+      const { customers } = await apiGateway.fetchCustomers()
+      setCustomers(customers)
+    } catch (error) {
+      showErrorFeedback('O cliente não pôde ser excluído')
+    } finally {
+      setIsFetching(false)
+    }
   }
 
   return (

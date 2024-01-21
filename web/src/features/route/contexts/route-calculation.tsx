@@ -4,7 +4,7 @@ import { LimpsysGateway } from '@/infra/gateways/limpsys'
 
 interface RouteCalculationContextValues {
   route: RouteCustomer[]
-  calculateRoute: () => void
+  calculateRoute: () => Promise<void>
 }
 
 export const RouteCalculationContext = createContext(

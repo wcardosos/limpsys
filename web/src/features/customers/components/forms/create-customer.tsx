@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { CreateCustomerDialogContext } from '../../contexts/create-customer-dialog'
 import { useContext } from 'react'
 import { useToast } from '@/common/components/ui/use-toast'
+import { useErrorFeedback } from '@/common/hooks/use-error-feedback'
 
 const createCustomerFormSchema = z.object({
   name: z
@@ -56,15 +57,21 @@ export function CreateCustomerForm() {
     },
   })
   const { toast } = useToast()
+  const { showErrorFeedback } = useErrorFeedback()
 
   const onSubmitCreateCustomer = async (formValues: CreateCustomerFormData) => {
-    await createCustomer(formValues)
-
-    closeDialog()
-    toast({
-      description: `Cliente ${formValues.name} criado com sucesso!`,
-      className: 'bg-green-100 border-green-500 text-green-500',
-    })
+    try {
+      await createCustomer(formValues)
+      closeDialog()
+      toast({
+        description: `Cliente ${formValues.name} criado com sucesso!`,
+        className: 'bg-green-100 border-green-500 text-green-500',
+      })
+    } catch (error) {
+      showErrorFeedback(
+        `O cliente ${formValues.name} não pôde ser criado. Tente novamente`,
+      )
+    }
   }
 
   return (
