@@ -16,7 +16,7 @@ interface CustomerListTableContextValues {
   hasPreviousPage: boolean
   isFetching: boolean
   hasFilterValues: boolean
-  filterCustomers: () => Promise<void>
+  filterCustomers: (page?: number) => Promise<void>
   setNameFilter: (value: string) => void
   setEmailFilter: (value: string) => void
   setPhoneFilter: (value: string) => void
@@ -58,14 +58,14 @@ export function CustomersListTableProvider({
       })
   }, [setCustomers])
 
-  const composeQueryParamsFromFilters = () => {
+  const composeQueryParamsFromFilters = (page?: number) => {
     const queryParams = []
 
     for (const [filter, value] of Object.entries({
       name: nameFilter,
       email: emailFilter,
       phone: phoneFilter,
-      page: currentPage,
+      page: page || currentPage,
     })) {
       if (value) queryParams.push(`${filter}=${value}`)
     }
@@ -73,8 +73,8 @@ export function CustomersListTableProvider({
     return queryParams.length ? `?${queryParams.join('&')}` : ''
   }
 
-  const filterCustomers = async () => {
-    const queryParams = composeQueryParamsFromFilters()
+  const filterCustomers = async (page?: number) => {
+    const queryParams = composeQueryParamsFromFilters(page)
 
     setIsFetching(true)
 

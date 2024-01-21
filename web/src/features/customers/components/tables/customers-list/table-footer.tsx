@@ -7,15 +7,11 @@ export function CustomersListTableFooter() {
     useContext(CustomersListTableContext)
 
   const goToPreviousPage = () => {
-    filterCustomers({
-      page: currentPage - 1,
-    })
+    filterCustomers(currentPage - 1)
   }
 
   const goToNextPage = () => {
-    filterCustomers({
-      page: currentPage + 1,
-    })
+    filterCustomers(currentPage + 1)
   }
 
   return (
