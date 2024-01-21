@@ -13,10 +13,14 @@ interface CustomersFilter {
   name?: string
   email?: string
   phone?: string
+  page?: number
 }
 
 interface CustomerListTableContextValues {
   data: Customer[]
+  currentPage: number
+  hasNextPage: boolean
+  hasPreviousPage: boolean
   isFetching: boolean
   filterCustomers: (filters: CustomersFilter) => Promise<void>
 }
@@ -35,13 +39,21 @@ export function CustomersListTableProvider({
   children,
 }: CustomersListTableProviderProps) {
   const [isFetching, setIsFetching] = useState<boolean>(true)
+  const [currentPage, setCurrentPage] = useState<number>(0)
+  const [hasNextPage, setHasNextPage] = useState<boolean>(false)
+  const [hasPreviousPage, setHasPreviousPage] = useState<boolean>(false)
   const { customers, setCustomers } = useContext(CustomersContext)
 
   useEffect(() => {
-    apiGateway.fetchCustomers().then((customers) => {
-      setCustomers(customers)
-      setIsFetching(false)
-    })
+    apiGateway
+      .fetchCustomers()
+      .then(({ customers, currentPage, hasNextPage, hasPreviousPage }) => {
+        setCustomers(customers)
+        setCurrentPage(currentPage)
+        setHasNextPage(hasNextPage)
+        setHasPreviousPage(hasPreviousPage)
+        setIsFetching(false)
+      })
   }, [setCustomers])
 
   const composeQueryParamsFromFilters = (filters?: CustomersFilter) => {
@@ -61,9 +73,13 @@ export function CustomersListTableProvider({
 
     setIsFetching(true)
 
-    const customers = await apiGateway.filterCustomers(queryParams)
+    const { customers, currentPage, hasNextPage, hasPreviousPage } =
+      await apiGateway.filterCustomers(queryParams)
 
     setCustomers(customers)
+    setCurrentPage(currentPage)
+    setHasNextPage(hasNextPage)
+    setHasPreviousPage(hasPreviousPage)
 
     setIsFetching(false)
   }
@@ -72,6 +88,9 @@ export function CustomersListTableProvider({
     <CustomersListTableContext.Provider
       value={{
         data: customers,
+        currentPage,
+        hasNextPage,
+        hasPreviousPage,
         isFetching,
         filterCustomers,
       }}

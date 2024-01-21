@@ -28,7 +28,7 @@ export class CustomerController {
       const { name, email, phone, page } = listCustomersQuerySchema.parse(
         request.query,
       )
-      const { customers, hasNextPage, hasPreviousPage } =
+      const { customers, currentPage, hasNextPage, hasPreviousPage } =
         await this.listCustomersUseCase.execute({
           filters: { name, email, phone, page },
         })
@@ -37,6 +37,7 @@ export class CustomerController {
         customers: customers.map((customer) =>
           CustomerMapper.toObject(customer),
         ),
+        currentPage,
         hasNextPage,
         hasPreviousPage,
       })

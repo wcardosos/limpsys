@@ -37,6 +37,7 @@ describe('Use case: ListAllCustomers', () => {
       expect(result.customers).toHaveLength(3)
       expect(result.hasNextPage).toBeFalsy()
       expect(result.hasPreviousPage).toBeFalsy()
+      expect(result.currentPage).toBe(1)
     })
   })
 })

@@ -13,6 +13,7 @@ interface ListCustomersUseCaseRequest {
 
 interface ListCustomerUseCaseResponse {
   customers: Customer[]
+  currentPage: number
   hasNextPage: boolean
   hasPreviousPage: boolean
 }
@@ -43,7 +44,7 @@ export class ListCustomersUseCase {
       filters,
     )
 
-    return { customers, hasNextPage, hasPreviousPage }
+    return { customers, currentPage, hasNextPage, hasPreviousPage }
   }
 
   private getPagination(totalCustomersCount: number, currentPage: number) {

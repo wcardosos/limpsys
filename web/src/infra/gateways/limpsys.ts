@@ -6,7 +6,12 @@ export class LimpsysGateway extends AxiosGateway {
     super('http://localhost:3333')
   }
 
-  async fetchCustomers(): Promise<Customer[]> {
+  async fetchCustomers(): Promise<{
+    customers: Customer[]
+    currentPage: number
+    hasNextPage: boolean
+    hasPreviousPage: boolean
+  }> {
     const customers = await this.get('/customers')
 
     return customers
@@ -18,7 +23,12 @@ export class LimpsysGateway extends AxiosGateway {
     return count
   }
 
-  async filterCustomers(queryParams: string): Promise<Customer[]> {
+  async filterCustomers(queryParams: string): Promise<{
+    customers: Customer[]
+    currentPage: number
+    hasNextPage: boolean
+    hasPreviousPage: boolean
+  }> {
     const customers = await this.get(`/customers${queryParams}`)
 
     return customers

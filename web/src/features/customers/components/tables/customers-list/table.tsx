@@ -26,7 +26,7 @@ export function CustomersListTable() {
               />
             </Table>
           </div>
-          <CustomersListTableFooter table={table} />
+          <CustomersListTableFooter />
         </>
       )}
     </>

@@ -1,36 +1,39 @@
 import { Button } from '@/common/components/ui/button'
-import { Customer } from '@/features/customers/entities/customer'
-import { Table } from '@tanstack/react-table'
+import { CustomersListTableContext } from '@/features/customers/contexts/customers-list-table'
+import { useContext } from 'react'
 
-interface CustomersListTableFooterProps {
-  table: Table<Customer>
-}
+export function CustomersListTableFooter() {
+  const { filterCustomers, currentPage, hasNextPage, hasPreviousPage } =
+    useContext(CustomersListTableContext)
 
-export function CustomersListTableFooter({
-  table,
-}: CustomersListTableFooterProps) {
+  const goToPreviousPage = () => {
+    filterCustomers({
+      page: currentPage - 1,
+    })
+  }
+
+  const goToNextPage = () => {
+    filterCustomers({
+      page: currentPage + 1,
+    })
+  }
+
   return (
     <div className="flex items-center justify-end space-x-2 py-4">
-      {table.getPageCount() ? (
-        <div className="flex-1 text-sm text-muted-foreground">
-          Página {table.getState().pagination.pageIndex + 1} de{' '}
-          {table.getPageCount()} páginas.
-        </div>
-      ) : null}
-
       <div className="space-x-2">
         <Button
           variant="outline"
           size="sm"
-          onClick={() => console.log('a implementar')}
-          disabled
+          onClick={goToPreviousPage}
+          disabled={!hasPreviousPage}
         >
           Anterior
         </Button>
         <Button
           variant="outline"
           size="sm"
-          onClick={() => console.log('a implementar')}
+          onClick={goToNextPage}
+          disabled={!hasNextPage}
         >
           Próximo
         </Button>
