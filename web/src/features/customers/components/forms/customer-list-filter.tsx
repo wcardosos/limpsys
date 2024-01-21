@@ -1,7 +1,7 @@
 import { Button } from '@/common/components/ui/button'
 import { Input } from '@/common/components/ui/input'
 import { CustomersListTableContext } from '@/features/customers/contexts/customers-list-table'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 
 import { SubmitHandler, useForm } from 'react-hook-form'
 
@@ -25,9 +25,21 @@ export function CustomerListFilterForm() {
   }
 
   const { register, handleSubmit, watch } = useForm<FiltersInput>()
-  setNameFilter(watch('name'))
-  setEmailFilter(watch('email'))
-  setPhoneFilter(watch('phone'))
+  const nameFilter = watch('name')
+  const emailFilter = watch('email')
+  const phoneFilter = watch('phone')
+
+  useEffect(() => {
+    setNameFilter(nameFilter)
+  }, [nameFilter, setNameFilter])
+
+  useEffect(() => {
+    setEmailFilter(emailFilter)
+  }, [emailFilter, setEmailFilter])
+
+  useEffect(() => {
+    setPhoneFilter(phoneFilter)
+  }, [phoneFilter, setPhoneFilter])
 
   const isFilterButtonDisabled = !hasFilterValues
 
