@@ -6,6 +6,7 @@ export function makeCustomersRepository() {
     findByEmail: vi.fn(),
     create: vi.fn(),
     count: vi.fn(),
+    delete: vi.fn(),
   } satisfies CustomersRepository
 
   return customersRepositoryMock

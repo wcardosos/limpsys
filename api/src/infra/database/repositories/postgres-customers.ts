@@ -78,6 +78,10 @@ export class PostgresCustomersRepository implements CustomersRepository {
     return count
   }
 
+  async delete(id: string): Promise<void> {
+    await this.connection.executeQuery(queries.delete, [id])
+  }
+
   private composeCustomerInsertValues(
     customer: Customer,
   ): CustomerInsertValues {

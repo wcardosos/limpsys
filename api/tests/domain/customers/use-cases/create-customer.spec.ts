@@ -21,6 +21,8 @@ describe('Use case: CreateCustomer', () => {
       name: customerMock.name,
       email: customerMock.email,
       phone: customerMock.phone,
+      xCoordinate: customerMock.xCoordinate,
+      yCoordinate: customerMock.yCoordinate,
     }
 
     it('should create a customer', async () => {

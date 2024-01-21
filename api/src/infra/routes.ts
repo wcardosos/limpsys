@@ -28,6 +28,10 @@ routes.post('/customers', (request, response, next) =>
   customerController.create(request, response, next),
 )
 
+routes.delete('/customers/:id', (request, response, next) =>
+  customerController.delete(request, response, next),
+)
+
 routes.get('/customers/count', (request, response, next) =>
   customerController.count(request, response, next),
 )

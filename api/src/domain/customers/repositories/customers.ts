@@ -9,4 +9,5 @@ export interface CustomersRepository {
   findByEmail(email: string): Promise<Customer | null>
   create(customer: Customer): Promise<void>
   count(): Promise<number>
+  delete(id: string): Promise<void>
 }

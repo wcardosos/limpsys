@@ -41,4 +41,5 @@ export const queries = {
     );
   `,
   count: 'SELECT COUNT(*) FROM customers;',
+  delete: 'UPDATE customers SET deleted_at = NOW() WHERE id = $1',
 }
