@@ -19,18 +19,23 @@ export class PostgresCustomersRepository implements CustomersRepository {
     name?: string
     email?: string
     phone?: string
+    page?: number
   }): Promise<Customer[]> {
-    const findQueryStatements = [queries.findAll]
+    const pageSize = 5
+    const page = filters?.page || 1
+    const offset = (page - 1) * pageSize
 
-    if (filters?.name)
-      findQueryStatements.push(`AND name LIKE '%${filters.name}%'`)
-    if (filters?.email)
-      findQueryStatements.push(`AND email LIKE '%${filters.email}%'`)
-    if (filters?.phone)
-      findQueryStatements.push(`AND phone LIKE '%${filters.phone}%'`)
+    const filtersQueryValues = [
+      filters?.name ? `%${filters.name}%` : '%%',
+      filters?.email ? `%${filters.email}%` : '%%',
+      filters?.phone ? `%${filters.phone}%` : '%%',
+      offset,
+      pageSize,
+    ]
 
     const customerQueryResult = await this.connection.executeQuery(
-      findQueryStatements.join(' '),
+      queries.findAll,
+      filtersQueryValues,
     )
 
     return customerQueryResult.rows.map(
@@ -51,6 +56,17 @@ export class PostgresCustomersRepository implements CustomersRepository {
           yCoordinate: y_coordinate,
         }),
     )
+  }
+
+  async findById(id: string): Promise<Customer | null> {
+    const customerQueryResult = await this.connection.executeQuery(
+      queries.findById,
+      [id],
+    )
+
+    if (customerQueryResult.rows.length === 0) return null
+
+    return CustomerMapper.toDomain(customerQueryResult.rows[0])
   }
 
   async findByEmail(email: string): Promise<Customer | null> {

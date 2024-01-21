@@ -25,11 +25,11 @@ export class CustomerController {
 
   async index(request: Request, response: Response, next: NextFunction) {
     try {
-      const { name, email, phone } = listAllCustomersQuerySchema.parse(
+      const { name, email, phone, page } = listAllCustomersQuerySchema.parse(
         request.query,
       )
       const { customers } = await this.listAllCustomersUseCase.execute({
-        filters: { name, email, phone },
+        filters: { name, email, phone, page },
       })
 
       return response.json(

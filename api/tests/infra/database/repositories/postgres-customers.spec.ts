@@ -56,30 +56,51 @@ describe('Repository: PostgresCustomers', () => {
         connectionMock.executeQuery.mockResolvedValueOnce({
           rows: [],
         })
-        const expectedQuery = queries.findAll + " AND name LIKE '%test%'"
         await sut.findAll({ name: 'test' })
 
-        expect(connectionMock.executeQuery).toHaveBeenCalledWith(expectedQuery)
+        expect(connectionMock.executeQuery).toHaveBeenCalledWith(
+          queries.findAll,
+          ['%test%', '%%', '%%', 0, 5],
+        )
       })
 
       it('should add email filter to query', async () => {
         connectionMock.executeQuery.mockResolvedValueOnce({
           rows: [],
         })
-        const expectedQuery = queries.findAll + " AND email LIKE '%test%'"
+
         await sut.findAll({ email: 'test' })
 
-        expect(connectionMock.executeQuery).toHaveBeenCalledWith(expectedQuery)
+        expect(connectionMock.executeQuery).toHaveBeenCalledWith(
+          queries.findAll,
+          ['%%', '%test%', '%%', 0, 5],
+        )
       })
 
       it('should add phone filter to query', async () => {
         connectionMock.executeQuery.mockResolvedValueOnce({
           rows: [],
         })
-        const expectedQuery = queries.findAll + " AND phone LIKE '%test%'"
+
         await sut.findAll({ phone: 'test' })
 
-        expect(connectionMock.executeQuery).toHaveBeenCalledWith(expectedQuery)
+        expect(connectionMock.executeQuery).toHaveBeenCalledWith(
+          queries.findAll,
+          ['%%', '%%', '%test%', 0, 5],
+        )
+      })
+
+      it('should add page filter to query', async () => {
+        connectionMock.executeQuery.mockResolvedValueOnce({
+          rows: [],
+        })
+
+        await sut.findAll({ page: 2 })
+
+        expect(connectionMock.executeQuery).toHaveBeenCalledWith(
+          queries.findAll,
+          ['%%', '%%', '%%', 5, 5],
+        )
       })
     })
   })

@@ -7,6 +7,7 @@ interface ListAllCustomersUseCaseRequest {
     name?: string
     email?: string
     phone?: string
+    page?: number
   }
 }
 

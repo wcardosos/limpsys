@@ -9,8 +9,27 @@ export const queries = {
       y_coordinate,
       created_at,
       updated_at
-    FROM customers WHERE deleted_at IS NULL
+    FROM customers
+    WHERE
+      deleted_at IS NULL
+      AND name LIKE $1
+      AND name LIKE $2
+      AND name LIKE $3
     ORDER BY created_at DESC
+    OFFSET $4 LIMIT $5;
+  `,
+  findById: `
+    SELECT
+      id,
+      name,
+      email,
+      phone,
+      x_coordinate,
+      y_coordinate,
+      created_at,
+      updated_at
+    FROM customers
+    WHERE deleted_at IS NULL AND id = $1;
   `,
   findByEmail: `
     SELECT
@@ -18,6 +37,8 @@ export const queries = {
       name,
       email,
       phone,
+      x_coordinate,
+      y_coordinate,
       created_at,
       updated_at
     FROM customers
@@ -40,6 +61,6 @@ export const queries = {
       $6
     );
   `,
-  count: 'SELECT COUNT(*) FROM customers;',
+  count: 'SELECT COUNT(*) FROM customers WHERE deleted_at IS NULL;',
   delete: 'UPDATE customers SET deleted_at = NOW() WHERE id = $1',
 }
