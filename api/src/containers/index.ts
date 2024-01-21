@@ -2,7 +2,7 @@ import { CustomersRepository } from '@/domain/customers/repositories/customers'
 import { CountCustomersUseCase } from '@/domain/customers/use-cases/count-customers'
 import { CreateCustomerUseCase } from '@/domain/customers/use-cases/create-customer'
 import { DeleteCustomerUseCase } from '@/domain/customers/use-cases/delete-customer'
-import { ListAllCustomersUseCase } from '@/domain/customers/use-cases/list-all-customers'
+import { ListCustomersUseCase } from '@/domain/customers/use-cases/list-customers'
 import { RouteCustomersRepository } from '@/domain/route/repositories/customers'
 import { CalculateBetterRouteUseCase } from '@/domain/route/use-cases/calculate-better-route'
 import { Connection } from '@/infra/database/connections/connection'
@@ -27,7 +27,7 @@ container.register<RouteCustomersRepository>(
 )
 
 // Use cases
-container.registerSingleton(ListAllCustomersUseCase)
+container.registerSingleton(ListCustomersUseCase)
 container.registerSingleton(CreateCustomerUseCase)
 container.registerSingleton(CountCustomersUseCase)
 container.registerSingleton(DeleteCustomerUseCase)

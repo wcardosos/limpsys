@@ -1,20 +1,20 @@
 import { CustomerMapper } from '@/domain/customers/mappers/customer'
 import { CreateCustomerUseCase } from '@/domain/customers/use-cases/create-customer'
-import { ListAllCustomersUseCase } from '@/domain/customers/use-cases/list-all-customers'
+import { ListCustomersUseCase } from '@/domain/customers/use-cases/list-customers'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'tsyringe'
 import { createCustomerBodySchema } from './schemas/customer/body'
 import { ValidationError } from '@/core/errors/validation'
 import { ZodErrorHandler } from './utils/zod-error-handler'
-import { listAllCustomersQuerySchema } from './schemas/customer/query'
+import { listCustomersQuerySchema } from './schemas/customer/query'
 import { CountCustomersUseCase } from '@/domain/customers/use-cases/count-customers'
 import { DeleteCustomerUseCase } from '@/domain/customers/use-cases/delete-customer'
 
 @injectable()
 export class CustomerController {
   constructor(
-    @inject(ListAllCustomersUseCase)
-    private listAllCustomersUseCase: ListAllCustomersUseCase,
+    @inject(ListCustomersUseCase)
+    private listCustomersUseCase: ListCustomersUseCase,
     @inject(CreateCustomerUseCase)
     private createCustomerUseCase: CreateCustomerUseCase,
     @inject(CountCustomersUseCase)
@@ -25,16 +25,21 @@ export class CustomerController {
 
   async index(request: Request, response: Response, next: NextFunction) {
     try {
-      const { name, email, phone, page } = listAllCustomersQuerySchema.parse(
+      const { name, email, phone, page } = listCustomersQuerySchema.parse(
         request.query,
       )
-      const { customers } = await this.listAllCustomersUseCase.execute({
-        filters: { name, email, phone, page },
-      })
+      const { customers, hasNextPage, hasPreviousPage } =
+        await this.listCustomersUseCase.execute({
+          filters: { name, email, phone, page },
+        })
 
-      return response.json(
-        customers.map((customer) => CustomerMapper.toObject(customer)),
-      )
+      return response.json({
+        customers: customers.map((customer) =>
+          CustomerMapper.toObject(customer),
+        ),
+        hasNextPage,
+        hasPreviousPage,
+      })
     } catch (error) {
       next(error)
     }

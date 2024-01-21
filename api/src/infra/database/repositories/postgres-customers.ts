@@ -15,22 +15,24 @@ export class PostgresCustomersRepository implements CustomersRepository {
     this.connection.connect()
   }
 
-  async findAll(filters?: {
-    name?: string
-    email?: string
-    phone?: string
-    page?: number
-  }): Promise<Customer[]> {
-    const pageSize = 5
+  async findAll(
+    itemsPerPage: number,
+    filters?: {
+      name?: string
+      email?: string
+      phone?: string
+      page?: number
+    },
+  ): Promise<Customer[]> {
     const page = filters?.page || 1
-    const offset = (page - 1) * pageSize
+    const offset = (page - 1) * itemsPerPage
 
     const filtersQueryValues = [
       filters?.name ? `%${filters.name}%` : '%%',
       filters?.email ? `%${filters.email}%` : '%%',
       filters?.phone ? `%${filters.phone}%` : '%%',
       offset,
-      pageSize,
+      itemsPerPage,
     ]
 
     const customerQueryResult = await this.connection.executeQuery(

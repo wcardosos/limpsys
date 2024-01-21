@@ -13,6 +13,7 @@ describe('Repository: PostgresCustomers', () => {
     executeQuery: vi.fn(),
   } satisfies Connection
   const customersMock = [makeCustomer(), makeCustomer()]
+  const itemsPerPageMock = 5
 
   beforeEach(() => {
     sut = new PostgresCustomersRepository(connectionMock)
@@ -43,7 +44,7 @@ describe('Repository: PostgresCustomers', () => {
         ],
       })
 
-      const result = await sut.findAll()
+      const result = await sut.findAll(itemsPerPageMock)
 
       expect(connectionMock.executeQuery).toHaveBeenCalledOnce()
       expect(result).toBeInstanceOf(Array<Customer>)
@@ -56,11 +57,11 @@ describe('Repository: PostgresCustomers', () => {
         connectionMock.executeQuery.mockResolvedValueOnce({
           rows: [],
         })
-        await sut.findAll({ name: 'test' })
+        await sut.findAll(itemsPerPageMock, { name: 'test' })
 
         expect(connectionMock.executeQuery).toHaveBeenCalledWith(
           queries.findAll,
-          ['%test%', '%%', '%%', 0, 5],
+          ['%test%', '%%', '%%', 0, itemsPerPageMock],
         )
       })
 
@@ -69,11 +70,11 @@ describe('Repository: PostgresCustomers', () => {
           rows: [],
         })
 
-        await sut.findAll({ email: 'test' })
+        await sut.findAll(itemsPerPageMock, { email: 'test' })
 
         expect(connectionMock.executeQuery).toHaveBeenCalledWith(
           queries.findAll,
-          ['%%', '%test%', '%%', 0, 5],
+          ['%%', '%test%', '%%', 0, itemsPerPageMock],
         )
       })
 
@@ -82,11 +83,11 @@ describe('Repository: PostgresCustomers', () => {
           rows: [],
         })
 
-        await sut.findAll({ phone: 'test' })
+        await sut.findAll(itemsPerPageMock, { phone: 'test' })
 
         expect(connectionMock.executeQuery).toHaveBeenCalledWith(
           queries.findAll,
-          ['%%', '%%', '%test%', 0, 5],
+          ['%%', '%%', '%test%', 0, itemsPerPageMock],
         )
       })
 
@@ -95,11 +96,11 @@ describe('Repository: PostgresCustomers', () => {
           rows: [],
         })
 
-        await sut.findAll({ page: 2 })
+        await sut.findAll(itemsPerPageMock, { page: 2 })
 
         expect(connectionMock.executeQuery).toHaveBeenCalledWith(
           queries.findAll,
-          ['%%', '%%', '%%', 5, 5],
+          ['%%', '%%', '%%', 5, itemsPerPageMock],
         )
       })
     })
