@@ -58,6 +58,7 @@ Ao clicar em **Adicionar cliente** um modal irá abrir. Neste modal você irá c
 #### Listagem de clientes
 ![Listagem de clientes](docs/screenshots/listagem.png)
 Os clientes são mostrados em uma tabela. Você pode excluir um usuário clicando nos 3 pontos à direita de cada cliente na tabela.
+
 ![Exclusão de usuário](docs/screenshots/excluir.png)
 
 #### Cálculo de rotas
