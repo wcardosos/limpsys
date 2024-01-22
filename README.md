@@ -77,3 +77,6 @@ npm run test
 Para deixar o projeto mais robusto podemos implementar as seguintes funcionalidades:
 - autenticação;
 - gerenciamento de erros no frontend mais detalhado.
+
+## Sentimento
+Achei um projeto muito legal de desenvolver. Consegui aprender muita coisa nova e irei implementar os pontos de melhoria no futuro.
