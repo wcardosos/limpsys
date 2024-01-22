@@ -19,7 +19,7 @@ export function WelcomeCard() {
         <p>No nosso sistema você pode:</p>
         <ul className="list-disc px-10">
           <li>cadastrar clientes;</li>
-          <li>editar clientes;</li>
+          <li>excluir clientes;</li>
           <li>
             calcular a rota de atendimento dos clientes mais rápida possível.
           </li>

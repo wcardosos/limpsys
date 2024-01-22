@@ -1,7 +1,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -27,9 +26,6 @@ export function CreateCustomerDialog({ children }: CreateCustomerDialogProps) {
           <DialogTitle className="text-blue-500 text-xl">
             Cadastro de cliente
           </DialogTitle>
-          <DialogDescription>
-            Você poderá editar esse cliente no futuro.
-          </DialogDescription>
         </DialogHeader>
         <CreateCustomerForm />
       </DialogContent>
